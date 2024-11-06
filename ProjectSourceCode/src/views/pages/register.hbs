@@ -1,0 +1,21 @@
+<div class="container">
+    <h1>Register</h1>
+
+    <!-- Registration form -->
+    <form action="/register" method="POST">
+            <!-- Username field -->
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required><br><br>
+
+            <!-- Password field -->
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <!-- Submit button -->
+            <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+    <form action="/login" method="GET">
+    <label type="text" name="login">Already have an account?</label>
+    <button class="btn btn-link" type="submit" name="login">Login</button>
+</form>
+</div>
