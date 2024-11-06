@@ -1,0 +1,19 @@
+{{!-- anything above app.uze(auth) will not require login --}}
+{{!-- Like shop does not require a login --}}
+
+{{> message}}
+
+<div class="container">
+    <h1>Login</h1>
+    <form method="POST" action="/login">
+        <label for="email"> Username: </label>
+        <input type="text" name="username"/><br><br>
+        <label for="email"> Password: </label>
+        <input type="text" name="password"/><br><br>
+        <button class="btn btn-primary" type="submit"> Login</button><br>
+    </form>
+    <form action="/register" method="GET">
+        <label type="text" name="register">Don't have account?</label>
+        <button class="btn btn-link" type="submit" name="register">Register</button>
+    </form>
+</div>
