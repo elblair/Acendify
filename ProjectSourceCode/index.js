@@ -17,8 +17,11 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Define routes for pages and apis here 
 
-
-
+app.get("*", (req, res) => {
+    res.render("pages/echo", {
+        route: req.path
+    })
+})
 
 //
 app.listen(3000, () => {
