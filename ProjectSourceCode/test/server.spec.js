@@ -1,6 +1,6 @@
 // ********************** Initialize server **********************************
 
-const server = require('../index'); //TODO: Make sure the path to your index.js is correctly added
+const server = require('../src/index'); //TODO: Make sure the path to your index.js is correctly added
 
 // ********************** Import Libraries ***********************************
 
@@ -10,23 +10,31 @@ chai.should();
 chai.use(chaiHttp);
 const {assert, expect} = chai;
 
-// ********************** DEFAULT WELCOME TESTCASE ****************************
-
-describe('Server!', () => {
+// Two unit testcases
+describe('register page!', () => {
   // Sample test case given to test / endpoint.
-  it('Returns the default welcome message', done => {
+  it('Correctly serves register page', done => {
     chai
       .request(server)
-      .get('/welcome')
+      .get('/register')
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.status).to.equals('success');
-        assert.strictEqual(res.body.message, 'Welcome!');
+        expect(res.text).include('Register');
         done();
       });
   });
 });
 
-// *********************** TODO: WRITE 2 UNIT TESTCASES **************************
-
-// ********************************************************************************
+describe('login page!', () => {
+  // Sample test case given to test / endpoint.
+  it('Correctly serves login page', done => {
+    chai
+      .request(server)
+      .get('/login')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.text).include('Login');
+        done();
+      });
+  });
+});
