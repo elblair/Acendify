@@ -21,6 +21,12 @@ app.get('/welcome', (req, res) => {
     res.json({status: 'success', message: 'Welcome!'});
   });
 
+  app.get('/echo', (req, res) => {
+    res.render('pages/echo', {
+      route: req.path
+    });
+  });
+
 app.get('/register', (req, res) => {
   res.render('pages/register',{});
   res.status(200);
@@ -37,6 +43,16 @@ app.get("*", (req, res) => {
         route: req.path
     })
 })
+
+app.use(express.static(path.join(__dirname, 'public'))); // for infinite scroll
+
+app.get('/path-to-more-content', (req, res) => {
+  // You can modify this logic as needed to fetch data from a database or other sources
+  const moreContent = 'This is some more dynamically loaded content.';
+
+  // Render the partial with the new content
+  res.render('partials/moreContent', { moreContent });
+});
 
 //
 module.exports = app.listen(3000, () => {
