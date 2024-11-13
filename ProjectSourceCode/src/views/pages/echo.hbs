@@ -39,15 +39,15 @@ body {
             <!-- Left column with 3/12 width -->
             <div class="col-3 left-side">
                 {{!-- <p style="position: fixed; top: 100px;">Hello.</p> --}}
-                <form action="/map" method="GET">
-                    <button class="btn btn-link" type="submit" name="map" style="position: fixed; top: 100px;">Map</button>
-                </form>
-                <form action="/leaderboard" method="GET">
+                <a href="/profile/{{user_id}}" class="btn btn-primary rounded-circle" style="position: fixed; top: 100px;">
+                  Profile
+                </a>
+                {{!-- <form action="/leaderboard" method="GET">
                     <button class="btn btn-link" type="submit" name="ledaerboard" style="position: fixed; top: 120px;">Leader Board</button>
                 </form>
                 <form action="/friends" method="GET">
                     <button class="btn btn-link" type="submit" name="friends" style="position: fixed; top: 140px;">Friends</button>
-                </form>
+                </form> --}}
             </div>
             <!-- Middle column with 6/12 width -->
             <div class="col-6 middle">
@@ -87,19 +87,7 @@ body {
                 </div>
             </div>
             <!-- Right column with 3/12 width -->
-            <div class="col-3 right-side">
-                <form action="/profile" method="GET">
-                    <button class="btn btn-primary rounded-circle" type="submit" name="profile" style="position: fixed; top: 100px;">Profile</button> 
-                    {{!-- <button class="btn btn-link" type="submit" name="register" style="position: fixed; top: 100px;">Profile</button> --}}
-                    {{!-- <button class="btn btn-primary" style="position: fixed; top: 100px; background-image: url('https://images.app.goo.gl/vFp4Z2xmA9bP2uUWA'); background-size: cover;"> 
-                        <!-- Optional text for accessibility -->
-                        Click Me
-                    </button> --}}
 
-                </form>
-                <form action="/settings" method="GET">
-                    <button class="btn btn-link" type="submit" name="settings" style="position: fixed; top: 140px;">Settings</button>
-                </form>
             </div>
         </div>
     </div>
