@@ -1,3 +1,12 @@
 Week of Nov 8th: 
 
 Basic dev setup (docker containers), on localhost echoing route and Nav bar. General codebase structure has been created 
+
+Week of Nov 15th:
+
+Skeleton atabase with 3 tables -- climbs, acsents, users
+
+home page mockup with *potential* infinite scroll
+
+functionality for login, register, add climb, add acsent, view logged in users ascents, user settings page -> 
+(in future this will allow user to edit user icon, dimensions (height and wingspan), gender....) 
