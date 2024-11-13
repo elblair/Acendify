@@ -1,37 +1,131 @@
-<div class="container">
-  {{> message}}
-  <h2 style="margin-bottom: 20px;">Register</h2>
-  <form method="POST" action="/register">
-    <div style="margin-bottom: 15px;">
-      <label for="username">Username</label>
-      <input 
-        type="text" 
-        id="username" 
-        name="username" 
-        required 
-        style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
-      />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{> head }} <!-- Include head partial for meta tags and CSS links -->
+  <title>Register | Acendify</title>
+  <style>
+    body {
+      background-color: #395b49; /* dark green from chosen color scheme for background */
+      font-family: 'Times New Roman', serif;
+    }
+
+    .register-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .brand-title {
+      font-size: 4.0rem;
+      font-weight: bold;
+      color: #69bf80;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      background: #a2e2a3;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      margin-top: 20px;
+    }
+
+    .form-container label {
+      font-weight: 600;
+    }
+
+    .form-container input {
+      border-radius: 5px;
+    }
+
+    .register-btn {
+      background-color: #395b49;
+      border: none;
+      border-radius: 5px;
+      color: #a2e2a3;
+      padding: 10px;
+      width: 100%;
+      margin-top: 15px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .register-btn:hover {
+      background-color: white;
+    }
+
+    .login-link {
+      margin-top: 15px;
+      text-align: center;
+    }
+
+    .login-link a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .login-link a:hover {
+      text-decoration: underline;
+    }
+
+    .description {
+      color: white;
+      text-align: center;
+      margin: 0 auto; /* Ensures the element is horizontally centered */
+      max-width: 600px; /* Limits the width for better readability */
+    }
+
+
+  </style>
+</head>
+<body>
+  {{> nav }} <!-- Include navigation bar partial -->
+
+  <div class="register-container">
+    <div class="brand-title">ACENDIFY</div>
+    <p style="color: white; text-align: center;" class="description">
+      Acendify is a dynamic platform for discovering and tracking climbing routes across America! You can create personal accounts, explore new climbs, log and monitor their progress, and connect with a community of climbers to share routes, reviews, and experiences.
+    </p>
+    <div class="form-container">
+      <h3 style="color: #395b49" class="text-center mb-3">Create Your Account</h3>
+      {{> message }} <!-- Include partial for messages (e.g., errors, success) -->
+      <form method="POST" action="/register">
+        <!-- Username -->
+        <div class="mb-3">
+          <label style="color: #395b49" for="username" class="form-label">Username</label>
+          <input 
+            type="text" 
+            class="form-control" 
+            id="username" 
+            name="username" 
+            required 
+          />
+        </div>
+        <!-- Password -->
+        <div class="mb-3">
+          <label style="color: #395b49" for="password" class="form-label">Password</label>
+          <input 
+            type="password" 
+            class="form-control" 
+            id="password" 
+            name="password" 
+            required 
+          />
+        </div>
+        <!-- Register Button -->
+        <button type="submit" class="register-btn">Register</button>
+      </form>
+      <!-- Login Link -->
+      <div class="login-link">
+        Already have an account? <a href="/login">Login</a>
+      </div>
     </div>
-
-    <div style="margin-bottom: 15px;">
-      <label for="password">Password</label>
-      <input 
-        type="password" 
-        id="password" 
-        name="password" 
-        required 
-        style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
-      />
-    </div>
-
-    <input 
-      type="submit" 
-      value="Register" 
-      style="background-color: #0d6efd; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 10px;"
-    />
-  </form>
-
-  <div>
-    Already have an account? <a href="/login" style="color: #0d6efd; text-decoration: none;">Login</a>
   </div>
-</div>
+
+  {{> footer }} <!-- Include footer partial -->
+</body>
+</html>
