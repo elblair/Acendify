@@ -4,32 +4,31 @@
       <a class="navbar-brand" href="/"></a>
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-            <a class="nav-link" href="/">Home</a>
+            <a style="font-family:'Times New Roman', Times, serif; color:#395b49" class="nav-link" href="/echo">Home</a>
+        </li>
+        <li class="nav-item">
+            <a style="font-family:'Times New Roman', Times, serif; color:#395b49" class="nav-link" href="/friends">Friends</a>
+        </li>
+        <li class="nav-item">
+            <a style="font-family:'Times New Roman', Times, serif; color:#395b49" class="nav-link" href="/leaderboard">Leaderboard</a>
+        </li>
+        <li class="nav-item">
+            <a style="font-family:'Times New Roman', Times, serif; color:#395b49" class="nav-link" href="/logout">Logout</a>
         </li>
       </ul>
     </div>
-    {{#if username}}
-      <div class="navbar-collapse collapse order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
+
+    <div class="navbar-collapse collapse order-3 dual-collapse2">
+      <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link" href="/user_settings">
-              {{ username }}
-            </a>
+              <a class="nav-link" href="#">
+                {{!-- <!-- Profile Picture -->
+                <img src="{{profile_pic}}" alt="Profile Picture" class="rounded-circle" style="width: 30px; height: 30px; margin-right: 10px;"> --}}
+                <!-- Username -->
+                <a style="font-family:'Times New Roman', Times, serif; color:#395b49" class="nav-link" href="/profile">{{username}}</a>
+              </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">logout</a>
-          </li>
-        </ul>
-      </div>
-    {{else}}
-      <div class="navbar-collapse collapse order-3 dual-collapse2">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/login">Login</a>
-          </li>
-        </ul>
-      </div>
-    {{/if}}
-  </nav>
+      </ul>
+    </div>
   </nav>
 </header>         
