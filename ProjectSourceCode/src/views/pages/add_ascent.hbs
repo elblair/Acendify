@@ -1,0 +1,60 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="mb-0">Log New Ascent</h2>
+        </div>
+        <div class="card-body">
+          {{#if error}}
+            <div class="alert alert-danger" role="alert">
+              {{error}}
+            </div>
+          {{/if}}
+
+          <form action="/add_ascent" method="POST">
+            <div class="mb-3">
+              <label for="climb_id" class="form-label">Select Climb *</label>
+              <select class="form-select" id="climb_id" name="climb_id" required>
+                <option value="">Choose a climb...</option>
+                {{#each climbs}}
+                  <option value="{{this.climb_id}}">
+                    {{this.name}} - {{this.grade}} - {{this.location}}
+                  </option>
+                {{/each}}
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="ascent_date" class="form-label">Date of Ascent</label>
+              <input type="date" class="form-control" id="ascent_date" name="ascent_date" 
+                     value="{{formatDate currentDate}}">
+            </div>
+
+            <div class="mb-3">
+              <label for="suggested_grade" class="form-label">Suggested Grade</label>
+              <input type="text" class="form-control" id="suggested_grade" name="suggested_grade" 
+                     maxlength="10" placeholder="e.g., V5, 5.12a">
+            </div>
+
+            <div class="mb-3">
+              <label for="rating" class="form-label">Rating (0.00 - 5.00)</label>
+              <input type="number" class="form-control" id="rating" name="rating" 
+                     min="0" max="5" step="0.01" placeholder="Rate from 0 to 5">
+            </div>
+
+            <div class="mb-3">
+              <label for="comment" class="form-label">Comment</label>
+              <textarea class="form-control" id="comment" name="comment" rows="3" 
+                        placeholder="Share your experience..."></textarea>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Log Ascent</button>
+            </div>  
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

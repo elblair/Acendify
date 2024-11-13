@@ -6,13 +6,19 @@ const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session'); 
 const bcrypt = require('bcryptjs'); 
-const axios = require('axios'); 
 
 // Configure Handlebars
 const hbs = handlebars.create({
     extname: 'hbs',
     layoutsDir: path.join(__dirname, 'views/layout'),
     partialsDir: path.join(__dirname, 'views/partials'),
+});
+hbs.handlebars.registerHelper('eq', function(a, b) {
+  return a === b;
+});
+hbs.handlebars.registerHelper('formatDate', function(date) {
+  if (!date) return '';
+  return new Date(date).toLocaleDateString();
 });
 
 app.engine('hbs', hbs.engine);
@@ -33,6 +39,14 @@ app.use(
   })
 );
 
+// Middleware for authentication
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    return res.redirect('/login');
+  }
+  next();
+};
+
 // Database configuration
 const dbConfig = {
   host: 'db',
@@ -45,19 +59,57 @@ const db = pgp(dbConfig);
 
 // Route to render homepage
 app.get('/', (req, res) => {
-  res.render('pages/echo', {
+  res.redirect('/home');
+});
+
+app.get('/home', (req, res) => {
+  res.render('pages/home', {
     route: req.path,
     username: req.session.user ? req.session.user.username : null
   });
 });
 
-// Routes for rendering login and register pages
+// Routes for rendering pages
 app.get('/login', (req, res) => {
   res.render('pages/login');
 });
 
 app.get('/register', (req, res) => {
   res.render('pages/register');
+});
+
+app.get('/add_climb', auth, (req,res) => {
+  res.render('pages/add_climb', req.session.user);
+});
+
+// get add_ascent route 
+app.get('/add_ascent', auth, async (req, res) => {
+  try {
+    const query = `
+      SELECT climb_id, name, grade, location 
+      FROM climbs 
+      ORDER BY name ASC
+    `;
+    const climbs = await db.manyOrNone(query);
+    
+    if (!climbs || climbs.length === 0) {
+      return res.render('pages/add_ascent', {
+        error: 'No climbs available in the database. Please add some climbs first.',
+        currentDate: new Date()
+      });
+    }
+    res.render('pages/add_ascent', {
+      climbs: climbs,
+      currentDate: new Date(),
+      username: req.session.user.username
+    });
+  } catch (err) {
+    console.error('Error fetching climbs:', err);
+    res.render('pages/add_ascent', {
+      error: 'Error loading climbs. Please try again.',
+      currentDate: new Date()
+    });
+  }
 });
 
 // Login route
@@ -101,28 +153,18 @@ app.get('/logout', (req, res) => {
   res.render('pages/logout');
 });
 
-// Middleware for authentication
-const auth = (req, res, next) => {
-  if (!req.session.user) {
-    return res.redirect('/login');
-  }
-  next();
-};
+
 
 // user settings page route
 app.get('/user_settings', auth, async (req, res) => {
   const query = 'SELECT user_id, username, created_at FROM users WHERE username = $1 LIMIT 1';
   try {
     const user = await db.oneOrNone(query, [req.session.user.username]);
-    if (!user) {
-      return res.redirect('/login');
-    }
-    
-    // Format the date to be more readable
+
     user.created_at = new Date(user.created_at).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
     });
     
     res.render('pages/user_settings', user);
@@ -130,9 +172,115 @@ app.get('/user_settings', auth, async (req, res) => {
     console.error('Database error:', error);
   }
 });
+//show my ascents route 
+app.get('/ascents', auth, async (req, res) => {
+  try {
+    const query = `
+      SELECT a.*, c.name as climb_name, c.grade, c.location
+      FROM ascents a
+      JOIN climbs c ON a.climb_id = c.climb_id
+      WHERE a.user_id = $1
+      ORDER BY a.ascent_date DESC
+    `;
+    
+    const ascents = await db.manyOrNone(query, [req.session.user.id]);
+    const hasAscents = ascents && ascents.length > 0;
+    
+    const countQuery = `
+      SELECT COUNT(*) as total_ascents
+      FROM ascents
+      WHERE user_id = $1 
+    `;
+    const countResult = await db.one(countQuery, [req.session.user.id]);
+    
+    res.render('pages/ascents', { 
+      ascents,
+      hasAscents,
+      totalAscents: countResult.total_ascents,
+      username: req.session.user.username 
+    });
+  } catch (err) {
+    console.error('Error fetching ascents:', err);
+    res.redirect('/');
+  }
+});
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+//add climb route
+app.post('/add_climb', async (req, res) => {
+    const { name, location, grade, rating } = req.body;
+    
+    const query = `
+      INSERT INTO climbs (name, location, grade, rating)
+      VALUES ($1, $2, $3, $4)
+      RETURNING climb_id
+    `;
+    
+    const values = [name, location, grade, rating];
+    db.manyOrNone(query, values)
+    .then(data => {
+      console.log(data);
+      res.redirect('/');
+    })   
+    .catch(err => {
+      console.error(err);
+      res.redirect('/add_climb');
+    });
+});
+
+//add ascent route
+app.post('/add_ascent', auth, async (req, res) => {
+  try {
+    const { climb_id, ascent_date, suggested_grade, rating, comment } = req.body;
+        if (!climb_id) {
+      const climbs = await db.manyOrNone('SELECT climb_id, name, grade, location FROM climbs ORDER BY name');
+      return res.render('pages/add_ascent', {
+        error: 'Please select a climb',
+        climbs,
+        currentDate: new Date()
+      });
+    }
+
+    const query = `
+      INSERT INTO ascents (
+        climb_id,
+        user_id,
+        ascent_date,
+        suggested_grade,
+        rating,
+        comment
+      )
+      VALUES ($1, $2, $3, $4, $5, $6)
+      RETURNING ascent_id
+    `;
+
+    const values = [
+      climb_id,
+      req.session.user.id,
+      ascent_date || new Date(),
+      suggested_grade,
+      rating,
+      comment
+    ];
+
+    await db.one(query, values);
+
+    res.redirect('/ascents');
+    
+  } catch (err) {
+    console.error('Error adding ascent:', err);
+    
+    const climbs = await db.manyOrNone('SELECT climb_id, name, grade, location FROM climbs ORDER BY name');
+    
+    res.render('pages/add_ascent', {
+      error: 'Error adding ascent. Please try again.',
+      climbs,
+      currentDate: new Date()
+    });
+  }
+}); 
+ 
 // Infinite scroll content route
 app.get('/path-to-more-content', (req, res) => {
   const contents = ["First content", "Second content", "Third content"];
