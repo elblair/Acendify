@@ -1,19 +1,37 @@
-{{!-- anything above app.uze(auth) will not require login --}}
-{{!-- Like shop does not require a login --}}
-
-{{> message}}
-
 <div class="container">
-    <h1>Login</h1>
-    <form method="POST" action="/login">
-        <label for="email"> Username: </label>
-        <input type="text" name="username"/><br><br>
-        <label for="email"> Password: </label>
-        <input type="text" name="password"/><br><br>
-        <button class="btn btn-primary" type="submit"> Login</button><br>
-    </form>
-    <form action="/register" method="GET">
-        <label type="text" name="register">Don't have account?</label>
-        <button class="btn btn-link" type="submit" name="register">Register</button>
-    </form>
+  {{> message}}
+  <h2 style="margin-bottom: 20px;">Login</h2>
+  <form method="POST" action="/login">
+    <div style="margin-bottom: 15px;">
+      <label for="username">Username</label>
+      <input 
+        type="text" 
+        id="username" 
+        name="username" 
+        required 
+        style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
+
+    <div style="margin-bottom: 15px;">
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        required 
+        style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
+
+    <input 
+      type="submit" 
+      value="Login" 
+      style="background-color: #0d6efd; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 10px;"
+    />
+  </form>
+
+  <div>
+    Don't have an account? <a href="/register" style="color: #0d6efd; text-decoration: none;">Register</a>
+  </div>
 </div>

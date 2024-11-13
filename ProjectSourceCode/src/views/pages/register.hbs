@@ -1,21 +1,37 @@
 <div class="container">
-    <h1>Register</h1>
+  {{> message}}
+  <h2 style="margin-bottom: 20px;">Register</h2>
+  <form method="POST" action="/register">
+    <div style="margin-bottom: 15px;">
+      <label for="username">Username</label>
+      <input 
+        type="text" 
+        id="username" 
+        name="username" 
+        required 
+        style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
 
-    <!-- Registration form -->
-    <form action="/register" method="POST">
-            <!-- Username field -->
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required><br><br>
+    <div style="margin-bottom: 15px;">
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        required 
+        style="width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;"
+      />
+    </div>
 
-            <!-- Password field -->
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required><br><br>
+    <input 
+      type="submit" 
+      value="Register" 
+      style="background-color: #0d6efd; color: white; padding: 8px 16px; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 10px;"
+    />
+  </form>
 
-            <!-- Submit button -->
-            <button class="btn btn-primary" type="submit">Register</button>
-    </form>
-    <form action="/login" method="GET">
-    <label type="text" name="login">Already have an account?</label>
-    <button class="btn btn-link" type="submit" name="login">Login</button>
-</form>
+  <div>
+    Already have an account? <a href="/login" style="color: #0d6efd; text-decoration: none;">Login</a>
+  </div>
 </div>
