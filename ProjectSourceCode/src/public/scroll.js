@@ -1,4 +1,9 @@
+let isLoading = false;
+
 function loadMoreContent() {
+    if (isLoading) return;
+
+    isLoading = true;
     fetch('/path-to-more-content')  // Request to the server to load more content
         .then(response => response.json())  // Expecting the HTML returned by the server
         .then(json => {
@@ -7,9 +12,12 @@ function loadMoreContent() {
             json.contentListFromArray.map(item => {
                 document.getElementById('scrollable-content-inner').insertAdjacentHTML('beforeend', item)
             })
-            
+            isLoading = false;
         })
-        .catch(error => console.error('Error loading more content:', error));
+        .catch(error => {
+            console.error('Error loading more content:', error)
+            isLoading = false;
+        });
 }
 
 function throttle(func, limit) {
@@ -42,12 +50,12 @@ const handleScroll = throttle(() => {
 
 const options = {
     root: document.getElementById('scrollable-content'), // viewport
-    rootMargin: '0px 0px -75% 0px', // trigger when sentinel is 25% from bottom
+    rootMargin: '0px 0px 50% 0px', // trigger when sentinel is 50% from bottom
     threshold: 0
 };
 
 const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting) {
+    if (entries[0].isIntersecting && !isLoading) {
         loadMoreContent();
     }
 }, options);
@@ -55,4 +63,5 @@ const observer = new IntersectionObserver(entries => {
 // Place this sentinel element 75% down your content
 const sentinel = document.createElement('div');
 document.getElementById('scrollable-content').appendChild(sentinel);
+window.addEventListener('scroll', throttle(handleScroll, 150), { passive: true });
 observer.observe(sentinel);
