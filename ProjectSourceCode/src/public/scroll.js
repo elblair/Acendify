@@ -42,7 +42,7 @@ const handleScroll = throttle(() => {
 
 const options = {
     root: document.getElementById('scrollable-content'), // viewport
-    rootMargin: '25%', // trigger when sentinel is 25% from bottom
+    rootMargin: '0px 0px -75% 0px', // trigger when sentinel is 25% from bottom
     threshold: 0
 };
 
