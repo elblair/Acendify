@@ -9,8 +9,9 @@ function loadMoreContent() {
         .then(json => {
             // Append the returned HTML to the scrollable content container
 
-            json.contentListFromArray.map(item => {
-                document.getElementById('scrollable-content-inner').insertAdjacentHTML('beforeend', item)
+            json.map(item => {
+                let html_elem = `<div class='more-content'><p>${item}</p></div>`
+                document.getElementById('scrollable-content-inner').insertAdjacentHTML('beforeend', html_elem)
             })
             isLoading = false;
         })

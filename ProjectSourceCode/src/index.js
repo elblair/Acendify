@@ -284,10 +284,7 @@ app.post('/add_ascent', auth, async (req, res) => {
 // Infinite scroll content route
 app.get('/path-to-more-content', (req, res) => {
   const contents = ["First content", "Second content", "Third content"];
-  const contentListFromArray = contents.map(content => 
-    `<div class='more-content'><p>${content}</p></div>`
-  );
-  res.json({ contentListFromArray });
+  res.json(contents);
 });
 
 // Start server
