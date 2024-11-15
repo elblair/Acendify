@@ -75,8 +75,14 @@ app.get('/login', (req, res) => {
 });
 
 app.get('/register', (req, res) => {
-  res.render('pages/register');
+  res.render('pages/register',{});
+  res.status(200);
 });
+
+app.get('/login', (req, res) => {
+    res.render('pages/register',{});
+    res.status(200);
+  });
 
 app.get('/add_climb', auth, (req,res) => {
   res.render('pages/add_climb', req.session.user);
@@ -111,67 +117,6 @@ app.get('/add_ascent', auth, async (req, res) => {
     });
   }
 });
-
-// Login route
-app.post('/login', (req, res) => {
-  const query = 'SELECT * FROM users WHERE username = $1 LIMIT 1';
-  console.log(req.body.username)
-  db.one(query, [req.body.username])
-    .then(async data => {
-      const match = await bcrypt.compare(req.body.password, data.password);
-      if (match) {
-        req.session.user = { username: data.username, id: data.user_id };
-        req.session.save();
-        res.redirect('/');
-      } else {
-        res.render('pages/login', { message: 'Incorrect username or password' });
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      res.redirect('/login');
-    });
-});
-
-// Register route
-app.post('/register', async (req, res) => {
-  try {
-    const hash = await bcrypt.hash(req.body.password, 10);
-    const insertQuery = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING username`;
-    const data = await db.one(insertQuery, [req.body.username, hash]);
-    console.log(`User registered: ${data.username}`);
-    res.redirect('/login');
-  } catch (err) {
-    console.error(err);
-    res.redirect('/register');
-  }
-});
-
-//Logout route 
-app.get('/logout', (req, res) => {
-  req.session.destroy();
-  res.render('pages/logout');
-});
-
-
-
-// user settings page route
-app.get('/user_settings', auth, async (req, res) => {
-  const query = 'SELECT user_id, username, created_at FROM users WHERE username = $1 LIMIT 1';
-  try {
-    const user = await db.oneOrNone(query, [req.session.user.username]);
-
-    user.created_at = new Date(user.created_at).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-    });
-    
-    res.render('pages/user_settings', user);
-  } catch (error) {
-    console.error('Database error:', error);
-  }
-});
 //show my ascents route 
 app.get('/ascents', auth, async (req, res) => {
   try {
@@ -204,90 +149,157 @@ app.get('/ascents', auth, async (req, res) => {
     res.redirect('/');
   }
 });
-// Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
+// Login route
+app.post('/login', (req, res) => {
+  const query = 'SELECT * FROM users WHERE username = $1 LIMIT 1';
+  console.log(req.body.username)
+  db.one(query, [req.body.username])
+    .then(async data => {
+      const match = await bcrypt.compare(req.body.password, data.password);
+      if (match) {
+        req.session.user = { username: data.username, id: data.user_id };
+        req.session.save();
+        res.redirect('/');
+      } else {
+        res.render('pages/login', { message: 'Incorrect username or password' });
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.redirect('/login');
+    });
+});
+
+// Register route
+app.post('/register', async (req, res) => {
+  try {
+    const existingUser = await db.oneOrNone('SELECT username FROM users WHERE username = $1', [req.body.username]);
+    if (existingUser) {
+      return res.render('pages/register', { 
+        error: 'Username already exists'
+      });
+    }
+
+    const hash = await bcrypt.hash(req.body.password, 10);
+    const insertQuery = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING username`;
+    const data = await db.one(insertQuery, [req.body.username, hash]);
+    console.log(`User registered: ${data.username}`);
+    res.redirect('/login');
+  } catch (err) {
+    console.error(err);
+    res.render('pages/register', {
+      error: 'Registration failed. Please try again.'
+    });
+  }
+});
 
 //add climb route
 app.post('/add_climb', async (req, res) => {
-    const { name, location, grade, rating } = req.body;
-    
-    const query = `
-      INSERT INTO climbs (name, location, grade, rating)
-      VALUES ($1, $2, $3, $4)
-      RETURNING climb_id
-    `;
-    
-    const values = [name, location, grade, rating];
-    db.manyOrNone(query, values)
-    .then(data => {
-      console.log(data);
-      res.redirect('/');
-    })   
-    .catch(err => {
-      console.error(err);
-      res.redirect('/add_climb');
-    });
+  const { name, location, grade, rating } = req.body;
+  
+  const query = `
+    INSERT INTO climbs (name, location, grade, rating)
+    VALUES ($1, $2, $3, $4)
+    RETURNING climb_id
+  `;
+  
+  const values = [name, location, grade, rating];
+  db.manyOrNone(query, values)
+  .then(data => {
+    console.log(data);
+    res.redirect('/login');
+  })   
+  .catch(err => {
+    console.error(err);
+    res.redirect('/add_climb');
+  });
 });
 
 //add ascent route
 app.post('/add_ascent', auth, async (req, res) => {
-  try {
-    const { climb_id, ascent_date, suggested_grade, rating, comment } = req.body;
-        if (!climb_id) {
-      const climbs = await db.manyOrNone('SELECT climb_id, name, grade, location FROM climbs ORDER BY name');
-      return res.render('pages/add_ascent', {
-        error: 'Please select a climb',
-        climbs,
-        currentDate: new Date()
-      });
-    }
-
-    const query = `
-      INSERT INTO ascents (
-        climb_id,
-        user_id,
-        ascent_date,
-        suggested_grade,
-        rating,
-        comment
-      )
-      VALUES ($1, $2, $3, $4, $5, $6)
-      RETURNING ascent_id
-    `;
-
-    const values = [
-      climb_id,
-      req.session.user.id,
-      ascent_date || new Date(),
-      suggested_grade,
-      rating,
-      comment
-    ];
-
-    await db.one(query, values);
-
-    res.redirect('/ascents');
-    
-  } catch (err) {
-    console.error('Error adding ascent:', err);
-    
+try {
+  const { climb_id, ascent_date, suggested_grade, rating, comment } = req.body;
+      if (!climb_id) {
     const climbs = await db.manyOrNone('SELECT climb_id, name, grade, location FROM climbs ORDER BY name');
-    
-    res.render('pages/add_ascent', {
-      error: 'Error adding ascent. Please try again.',
+    return res.render('pages/add_ascent', {
+      error: 'Please select a climb',
       climbs,
       currentDate: new Date()
     });
   }
+
+  const query = `
+    INSERT INTO ascents (
+      climb_id,
+      user_id,
+      ascent_date,
+      suggested_grade,
+      rating,
+      comment
+    )
+    VALUES ($1, $2, $3, $4, $5, $6)
+    RETURNING ascent_id
+  `;
+
+  const values = [
+    climb_id,
+    req.session.user.id,
+    ascent_date || new Date(),
+    suggested_grade,
+    rating,
+    comment
+  ];
+
+  await db.one(query, values);
+
+  res.redirect('/ascents');
+  
+} catch (err) {
+  console.error('Error adding ascent:', err);
+  
+  const climbs = await db.manyOrNone('SELECT climb_id, name, grade, location FROM climbs ORDER BY name');
+  
+  res.render('pages/add_ascent', {
+    error: 'Error adding ascent. Please try again.',
+    climbs,
+    currentDate: new Date()
+  });
+}
 }); 
  
 // Infinite scroll content route
 app.get('/path-to-more-content', (req, res) => {
   const contents = ["First content", "Second content", "Third content"];
   res.json(contents);
+
+//Logout route 
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
+// user settings page route
+app.get('/user_settings', auth, async (req, res) => {
+  const query = 'SELECT user_id, username, created_at FROM users WHERE username = $1 LIMIT 1';
+  try {
+    const user = await db.oneOrNone(query, [req.session.user.username]);
+    if (!user) {
+      return res.redirect('/login');
+    }
+    
+    // Format the date to be more readable
+    user.created_at = new Date(user.created_at).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    
+    res.render('pages/user_settings', user);
+  } catch (error) {
+    console.error('Database error:', error);
+  }
 });
 
-// Start server
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+//
+module.exports = app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
