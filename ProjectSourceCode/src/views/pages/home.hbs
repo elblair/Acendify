@@ -3,16 +3,13 @@
     <div class="container">
         <div class="row">
             <div class="col-3 left-side">
-                <a href="/profile/{{user_id}}" class="btn btn-primary rounded-circle" style="position: fixed; top: 100px;">
-                  Profile
-                </a>
-                {{!-- <form action="/leaderboard" method="GET">
-                    <button class="btn btn-link" type="submit" name="ledaerboard" style="position: fixed; top: 120px;">Leader Board</button>
-                </form>
-                <form action="/friends" method="GET">
-                    <button class="btn btn-link" type="submit" name="friends" style="position: fixed; top: 140px;">Friends</button>
-                </form> --}}
+                <div class="search-container">
+                    <p style="position: fixed; top: 100px;">Search:</p>
+                    <input type="text" id="searchInput" placeholder="Search..." style="position: fixed; top: 120px;">
+                    <ul id="searchResults"></ul>
+                </div>
             </div>
+            <script src="../../search.js"></script>
             <div class="col-6 middle">
                 <div id="scrollable-content" style="overflow-y: scroll; height: 100vh;">
                     <div id="scrollable-content-inner">
