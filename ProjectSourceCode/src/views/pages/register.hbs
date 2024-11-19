@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {{> head }} <!-- Include head partial for meta tags and CSS links -->
+  {{> head }}
   <title>Register | Acendify</title>
   <style>
     body {
-      background-color: #395b49; /* dark green from chosen color scheme for background */
+      background-color: #395b49; 
       font-family: 'Times New Roman', serif;
     }
 
@@ -75,26 +75,24 @@
     .description {
       color: white;
       text-align: center;
-      margin: 0 auto; /* Ensures the element is horizontally centered */
-      max-width: 600px; /* Limits the width for better readability */
+      margin: 0 auto;
+      max-width: 600px; 
     }
 
 
   </style>
 </head>
 <body>
-  {{> nav }} <!-- Include navigation bar partial -->
+  {{> nav }}
 
   <div class="register-container">
     <div class="brand-title">ACENDIFY</div>
     <p style="color: white; text-align: center;" class="description">
-      Acendify is a dynamic platform for discovering and tracking climbing routes across America! You can create personal accounts, explore new climbs, log and monitor their progress, and connect with a community of climbers to share routes, reviews, and experiences.
     </p>
     <div class="form-container">
       <h3 style="color: #395b49" class="text-center mb-3">Create Your Account</h3>
-      {{> message }} <!-- Include partial for messages (e.g., errors, success) -->
+      {{> message }}
       <form method="POST" action="/register">
-        <!-- Username -->
         <div class="mb-3">
           <label style="color: #395b49" for="username" class="form-label">Username</label>
           <input 
@@ -105,7 +103,6 @@
             required 
           />
         </div>
-        <!-- Password -->
         <div class="mb-3">
           <label style="color: #395b49" for="password" class="form-label">Password</label>
           <input 
@@ -116,10 +113,8 @@
             required 
           />
         </div>
-        <!-- Register Button -->
         <button type="submit" class="register-btn">Register</button>
       </form>
-      <!-- Login Link -->
       <div class="login-link">
         Already have an account? <a href="/login">Login</a>
       </div>
