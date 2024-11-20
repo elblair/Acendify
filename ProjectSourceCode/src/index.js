@@ -266,6 +266,11 @@ try {
   });
 }
 }); 
+ 
+// Infinite scroll content route
+app.get('/path-to-more-content', (req, res) => {
+  const contents = ["First content", "Second content", "Third content"];
+  res.json(contents);
 
 //Logout route 
 app.get('/logout', (req, res) => {
