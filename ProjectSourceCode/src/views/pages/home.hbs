@@ -1,15 +1,35 @@
 <!DOCTYPE html>
+<html land="en">
+    <head>
+        {{!-- <link rel="stylesheet" href="style.css"> --}}
+        {{!-- <script src="../../search.js"></script> --}}
+        {{!-- <script src="../../../src/search.js"></script>
+        <script src="../../src/index.js"></script> --}}
+        {{!-- <script src="http://localhost:3000/src/search.js"></script> --}}
+        <script src="/src/search.js"></script>
+        <script src="/src/index.js"></script>
+
+    </head>
 <body>
     <div class="container">
         <div class="row">
             <div class="col-3 left-side">
                 <div class="search-container">
                     <p style="position: fixed; top: 100px;">Search:</p>
-                    <input type="text" id="searchInput" placeholder="Search..." style="position: fixed; top: 120px;">
+                    {{!-- <input type="search" id="search" placeholder="..." value="{{searchQuery}}" style="position: fixed; top: 120px;"> --}}
+                    <input type="search" id="search" placeholder="..." data-search style="position: fixed; top: 120px;">
+                    <button type="button" onclick="performSearch()" style="position: fixed; top: 150px;">Search</button>
                     <ul id="searchResults"></ul>
+                    <div class="user-cards" data-user-cards-container></div>
+                        <template data-user-template="">
+                            <div class="card">
+                                <div class="header" style="position: fixed; top: 200px;"></div>
+                                <div class="body" style="position: fixed; top: 220px;"></div>
+                            </div>
+                        </template>
                 </div>
             </div>
-            <script src="../../search.js"></script>
+            {{!-- <script src="../../search.js"></script> --}}
             <div class="col-6 middle">
                 <div id="scrollable-content" style="overflow-y: scroll; height: 100vh;">
                     <div id="scrollable-content-inner">
@@ -47,7 +67,7 @@
         </div>
     </div>
 
-    <script src="/scroll.js"></script> 
+    {{!-- <script src="/scroll.js"></script>  --}}
 </body>
 
 </html>
