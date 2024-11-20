@@ -12,7 +12,7 @@ Plans for next week. Flesh out homepage more, add leaderboard page with some ran
 
 Week of Nov 22th: 
 
-Features to implement next week. 
+Features to implement next week.
   
   Profile page: 
   
@@ -23,3 +23,25 @@ Features to implement next week.
   friends: 
 
   test suite for add climb, add acsent
+
+  notes:
+  Need to do:
+    Hyperlink to friends profile
+    Conditional hyperlink
+    If user id = session user id
+
+    Logged out
+    Newest added to database
+
+    Logged in
+    Show friends most recent
+    
+    ^ Following page vs explore page
+
+    Leaderboard ideas: 
+      Toughest climb finished that day/week
+      Go by grade
+      Sum points by grade
+      Total grade * 100
+    Search bar where profile button is on homepage
+
