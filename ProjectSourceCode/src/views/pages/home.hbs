@@ -1,4 +1,151 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acendify - Home</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Times New Roman', Times, serif;
+      background-color: #a2e2a3; /* Granny Smith */
+    }
+
+    header {
+      background-color: #395b49; /* Mineral Green */
+      color: #f4e1a4; /* Sandwisp */
+      text-align: center;
+      padding: 20px;
+      font-size: 1.5rem;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .card {
+      background-color: #395b49; 
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      margin-bottom: 20px;
+      padding: 15px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      color: #f4e1a4; /* Sandwisp */
+    }
+
+    .card h3 {
+      margin-top: 0;
+      color: #69bf80; /* De York */
+    }
+
+    .card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .like-button {
+      background-color: #69bf80; /* De York */
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .like-button:hover {
+      background-color: #f4e1a4; /* Sandwisp */
+      color: #395b49; /* Mineral Green */
+    }
+
+    .like-count {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #f4e1a4; /* Sandwisp */
+    }
+
+    .like-count i {
+      margin-left: 5px;
+      color: #e77e23; /* Zest */
+    }
+  </style>
+</head>
+<body>
+
+<header>Acendify</header>
+
+<div class="container" id="content-container">
+  <!-- Sample card for demonstration -->
+  <div class="card">
+    <h3>John Doe</h3>
+    <img src="https://via.placeholder.com/600x300" alt="Post image">
+    <div class="card-footer">
+      <button class="like-button" onclick="incrementLike(this)">Like</button>
+      <span class="like-count">0 <i>❤️</i></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to increment the like count
+  function incrementLike(button) {
+    const likeCountSpan = button.nextElementSibling;
+    const currentLikes = parseInt(likeCountSpan.textContent);
+    likeCountSpan.textContent = `${currentLikes + 1} ❤️`;
+  }
+
+  // Infinite scroll implementation
+  const contentContainer = document.getElementById('content-container');
+  let loading = false;
+
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
+      loading = true;
+      // Simulate loading new content
+      setTimeout(() => {
+        for (let i = 0; i < 5; i++) {
+          const card = document.createElement('div');
+          card.className = 'card';
+          card.innerHTML = `
+            <h3>Random User</h3>
+            <img src="https://via.placeholder.com/600x300" alt="Post image">
+            <div class="card-footer">
+              <button class="like-button" onclick="incrementLike(this)">Like</button>
+              <span class="like-count">0 <i>❤️</i></span>
+            </div>
+          `;
+          contentContainer.appendChild(card);
+        }
+        loading = false;
+      }, 1000);
+    }
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+{{!-- <!DOCTYPE html>
 <body>
     <div class="container">
         <div class="row">
@@ -53,4 +200,4 @@
     <script src="public/scroll.js"></script> 
 </body>
 
-</html>
+</html> --}}
