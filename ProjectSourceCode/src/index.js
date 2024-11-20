@@ -47,6 +47,9 @@ const auth = (req, res, next) => {
   next();
 };
 
+// Serve static
+app.use('/public', express.static(path.join(__dirname, 'public')));
+
 // Database configuration
 const dbConfig = {
   host: 'db',
