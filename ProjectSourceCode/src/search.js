@@ -1,3 +1,4 @@
+// SECTION FOR CLIMBER SEARCH
 const userCardTemplate = document.querySelector("[data-user-template]");
 const userCardContainer = document.querySelector("[data-user-cards-container]");
 const searchInput = document.querySelector("[data-search]");
@@ -14,7 +15,7 @@ searchInput.addEventListener("input", e =>{
     })
 });
 
-fetch("https://jsonplaceholder.typicode.com")
+fetch("https://jsonplaceholder.typicode.com") //dummy practice API for checking if this thing works
 .then(res => res.json())
 .then(data =>{
     users = data.map(user => {
@@ -26,6 +27,41 @@ fetch("https://jsonplaceholder.typicode.com")
         userCardContainer.append(card);
         console.log(user);
         return {name: user.name, email: user.email, element: card};
+    });
+})
+
+// SECTION FOR ROUTE SEARCH
+
+const userCardTemplateClimbs = document.querySelector("[data-user-template]");
+const userCardContainerClimbs = document.querySelector("[data-user-cards-container]");
+const searchInputClimbs = document.querySelector("[data-search]");
+
+let climbs = [];
+
+searchInputClimbs.addEventListener("input", e =>{
+    const value = e.target.value.toLowerCase()
+    climbs.forEach(climb =>{
+        const isVisible = 
+            climb.name.toLowerCase().includes(value) ||  //added a route name search
+            climb.grade.toLowerCase().includes(value) //added a route grade search
+        climb.element.classList.toggle("hide", !isVisible)
+    })
+});
+
+fetch("https://jsonplaceholder.typicode.com") //dummy practice API for checking if this thing works
+.then(res => res.json())
+.then(data =>{
+    climbs = data.map(user => {
+        const cardroute = userCardTemplateClimbs.content.cloneNode(true).children[0];
+        const headerroute = card.querySelector("[data-header]");
+        const bodyroute = card.querySelector("[data-body]");
+        headerroute.textContent = climb.name;
+        bodyroute.textContent = climb.grade;
+        bodyroute.textContent = climb.rating;
+        bodyroute.textContent = climb.locatoin;
+        userCardContainerClimbs.append(cardroute);
+        // console.log(user);
+        return {name: climb.name, grade: climb.grade, element: card};
     });
 })
 

@@ -8,23 +8,38 @@
         {{!-- <script src="http://localhost:3000/src/search.js"></script> --}}
         <script src="/src/search.js"></script>
         <script src="/src/index.js"></script>
-
     </head>
 <body>
     <div class="container">
         <div class="row">
             <div class="col-3 left-side">
                 <div class="search-container">
-                    <p style="position: fixed; top: 100px;">Search:</p>
+                    <p style="position: fixed; top: 100px;">SEARCH FOR CLIMBERS:</p>
                     {{!-- <input type="search" id="search" placeholder="..." value="{{searchQuery}}" style="position: fixed; top: 120px;"> --}}
                     <input type="search" id="search" placeholder="..." data-search style="position: fixed; top: 120px;">
-                    <button type="button" onclick="performSearch()" style="position: fixed; top: 150px;">Search</button>
+                    <button type="button" onclick="performSearch()" style="position: fixed; top: 155px;">Search</button>
                     <ul id="searchResults"></ul>
                     <div class="user-cards" data-user-cards-container></div>
                         <template data-user-template="">
                             <div class="card">
                                 <div class="header" style="position: fixed; top: 200px;"></div>
                                 <div class="body" style="position: fixed; top: 220px;"></div>
+                            </div>
+                        </template>
+                </div>
+                <div class="search-container">
+                    <p style="position: fixed; top: 200px;">SEARCH FOR ROUTES:</p>
+                    {{!-- <input type="search" id="search" placeholder="..." value="{{searchQuery}}" style="position: fixed; top: 120px;"> --}}
+                    <input type="search" id="search" placeholder="..." data-search style="position: fixed; top: 220px;">
+                    <button type="button" onclick="performSearch()" style="position: fixed; top: 255px;">Search</button>
+                    <ul id="searchResults"></ul>
+                    <div class="user-cards" data-user-cards-container></div>
+                        <template data-user-template="">
+                            <div class="card">
+                                {{!-- Changed header to header route --}}
+                                <div class="headerclimb" style="position: fixed; top: 200px;"></div> 
+                                {{!-- Changed body to body route --}}
+                                <div class="bodyclimb" style="position: fixed; top: 220px;"></div>
                             </div>
                         </template>
                 </div>
