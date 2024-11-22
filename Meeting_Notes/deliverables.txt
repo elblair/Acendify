@@ -13,4 +13,4 @@ functionality for login, register, add climb, add acsent, view logged in users a
 
 Week of Nov 22nd:
 
-Added to database various user traits to be updated in the user settings page
+Added to database various user traits to be updated in the user settings page, fleshed out home page and nav bar features
