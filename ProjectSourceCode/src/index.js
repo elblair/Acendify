@@ -52,7 +52,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Database configuration
 const dbConfig = {
-  host: process.env.POSTGRES_DB,
+  host: process.env.POSGRES_HOST,
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
