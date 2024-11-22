@@ -49,7 +49,7 @@ const auth = (req, res, next) => {
 
 // Database configuration
 const dbConfig = {
-  host: 'db',
+  host: process.env.POSTGRES_DB,
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
