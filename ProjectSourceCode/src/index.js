@@ -164,7 +164,7 @@ app.post('/login', (req, res) => {
         req.session.save();
         res.redirect('/');
       } else {
-        res.render('pages/login', { message: 'Incorrect username or password' });
+        res.render('pages/login', {message: 'Incorrect username or password'});
       }
     })
     .catch(err => {

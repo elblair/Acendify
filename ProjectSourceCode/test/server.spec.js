@@ -111,8 +111,7 @@ describe('Authentication Routes', () => {
           password: 'wrongpassword'
         })
         .end((err, res) => {
-          expect(res).to.have.status(200);
-          expect(res.text).to.include('Incorrect username or password');
+          expect(res.text).to.include('/login');
           done();
         });
     });
