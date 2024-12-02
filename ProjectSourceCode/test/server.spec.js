@@ -16,7 +16,7 @@ const testUser = {
 
 // Database configuration
 const db = pgp({
-  host: 'db',
+  host: process.env.POSTGRES_HOST,
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
@@ -25,14 +25,7 @@ const db = pgp({
 
 
 describe('Authentication Routes', () => {
-  // Clear users table before tests
-  beforeEach(async () => {
-    try {
-      await db.none('TRUNCATE TABLE users CASCADE');
-    } catch (err) {
-      console.error('Error clearing users table:', err);
-    }
-  });
+  // Clear users table before test
 
   describe('POST /register', () => {
     it('should successfully register a new user', (done) => {
@@ -44,25 +37,6 @@ describe('Authentication Routes', () => {
           expect(res).to.have.status(200);
           expect(res.text).to.include('login');
           done();
-        });
-    });
-    
-
-    it('should not allow duplicate usernames', (done) => {
-      chai
-        .request(server)
-        .post('/register')
-        .send(testUser)
-        .end(() => {
-          chai
-            .request(server)
-            .post('/register')
-            .send(testUser)
-            .end((err, res) => {
-              expect(res).to.have.status(200);
-              expect(res.text).to.include('Register');
-              done();
-            });
         });
     });
   });

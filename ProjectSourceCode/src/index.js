@@ -52,7 +52,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 
 // Database configuration
 const dbConfig = {
-  host: process.env.POSGRES_HOST,
+  host: process.env.POSTGRES_HOST,
   port: 5432,
   database: process.env.POSTGRES_DB,
   user: process.env.POSTGRES_USER,
@@ -301,7 +301,35 @@ app.get('/user_settings', auth, async (req, res) => {
   } catch (error) {
     console.error('Database error:', error);
   }
+}); 
+
+// Endpoint to fetch ascents
+app.get('/api/ascents', async (req, res) => {
+  const limit = parseInt(req.query.limit, 10) || 5;
+  const offset = parseInt(req.query.offset, 10) || 0;
+
+  try {  
+    const result = await db.manyOrNone(
+      `SELECT ascent_id, climb_id, user_id, comment, suggested_grade, rating, ascent_date 
+       FROM ascents
+       ORDER BY ascent_date DESC
+       LIMIT $1 OFFSET $2`,
+      [limit, offset]
+    );
+    const climbs = await db.manyOrNone(
+      'SELECT climb_id, name, grade location FROM climbs');
+    const users = await db.manyOrNone(
+      'SELECT username, user_id FROM users');
+      
+
+    res.json([result, climbs, users]);
+  } catch (err) {
+    console.error('Error fetching results:', err.message);
+    res.status(500).send('Error fetching ascents');
+  }
 });
+
+
 
 //
 module.exports = app.listen(3000, () => {
