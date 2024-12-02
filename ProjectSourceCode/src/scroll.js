@@ -15,4 +15,3 @@
 //       loadMoreContent(); // Call the function to load more content when reaching the bottom
 //     }
 //   });
-  

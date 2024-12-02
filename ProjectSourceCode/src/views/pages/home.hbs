@@ -81,123 +81,74 @@
     .like-count i {
       margin-left: 5px;
       color: #e77e23; /* Zest */
-    }
-  </style>
+    }  </style>
 </head>
 <body>
 
 <header>Acendify</header>
 
-<div class="container" id="content-container">
-  <!-- Sample card for demonstration -->
-  <div class="card">
-    <h3>John Doe</h3>
-    <img src="https://via.placeholder.com/600x300" alt="Post image">
-    <div class="card-footer">
-      <button class="like-button" onclick="incrementLike(this)">Like</button>
-      <span class="like-count">0 <i>❤️</i></span>
-    </div>
-  </div>
-</div>
+<div class="container" id="content-container"></div>
 
 <script>
-  // Function to increment the like count
-  function incrementLike(button) {
-    const likeCountSpan = button.nextElementSibling;
-    const currentLikes = parseInt(likeCountSpan.textContent);
-    likeCountSpan.textContent = `${currentLikes + 1} ❤️`;
-  }
-
-  // Infinite scroll implementation
   const contentContainer = document.getElementById('content-container');
   let loading = false;
+  let offset = 0;
+  const limit = 5;
+  async function fetchAscents() {
+    try {
+      const response = await fetch(`/api/ascents?limit=${limit}&offset=${offset}`);
+      console.log('Response:', response);
+      if (!response.ok) throw new Error(`Error fetching ascents: ${response.statusText}`);
+      const data = await response.json();
+      console.log('Fetched data:', data);
+      return data;
+    } catch (error) {
+      console.error('Fetch error:', error.message);
+      return [];
+    }
+  }
+
+  function createCard(ascent, climbs, users) {
+    const climb = climbs.find(c => c.climb_id === ascent.climb_id);
+    console.log(users)
+    const user = users.find(u => u.user_id === ascent.user_id);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <h3>User: ${user ? user.username : 'Unknown'}</h3>
+      <p>Climb: ${climb ? climb.name : 'Unknown'}</p>
+      <p>Comment: ${ascent.comment || 'No comment'}</p>
+      <p>Suggested Grade: V${ascent.suggested_grade || 'N/A'}</p>
+      <p>Rating: ${ascent.rating || 'N/A'}/5</p>
+    `;
+    return card;
+  }
+
+  async function loadAscents() {
+    if (loading) return;
+    loading = true;
+    const res = await fetchAscents();
+
+    if (res[0].length === 0) {
+      loading = false;
+      return;
+    }
+    res[0].forEach(ascent => {
+      const card = createCard(ascent, res[1], res[2]);
+      contentContainer.appendChild(card);
+    });
+    offset += limit; 
+    loading = false;
+  }
 
   window.addEventListener('scroll', () => {
     if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
-      loading = true;
-      // Simulate loading new content
-      setTimeout(() => {
-        for (let i = 0; i < 5; i++) {
-          const card = document.createElement('div');
-          card.className = 'card';
-          card.innerHTML = `
-            <h3>Random User</h3>
-            <img src="https://via.placeholder.com/600x300" alt="Post image">
-            <div class="card-footer">
-              <button class="like-button" onclick="incrementLike(this)">Like</button>
-              <span class="like-count">0 <i>❤️</i></span>
-            </div>
-          `;
-          contentContainer.appendChild(card);
-        }
-        loading = false;
-      }, 1000);
+      loadAscents();
     }
   });
+  
+  loadAscents();
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-{{!-- <!DOCTYPE html>
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col-3 left-side">
-                <a href="/profile/{{user_id}}" class="btn btn-primary rounded-circle" style="position: fixed; top: 100px;">
-                  Profile
-                </a>
-                {{!-- <form action="/leaderboard" method="GET">
-                    <button class="btn btn-link" type="submit" name="ledaerboard" style="position: fixed; top: 120px;">Leader Board</button>
-                </form>
-                <form action="/friends" method="GET">
-                    <button class="btn btn-link" type="submit" name="friends" style="position: fixed; top: 140px;">Friends</button>
-                </form> --}}
-            </div>
-            <div class="col-6 middle">
-                <div id="scrollable-content" style="overflow-y: scroll; height: 100vh;">
-                    <div id="scrollable-content-inner">
-                    <h2>Possible implementation for infinite scroll sans react</h2>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="public/scroll.js"></script> 
-</body>
-
-</html> --}}
