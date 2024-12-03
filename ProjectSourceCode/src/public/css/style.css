@@ -23,6 +23,8 @@ body {
   font-family: var(--font-family-primary);
   background-color: var(--color-primary);
   color: var(--color-text-light);
+  min-height: 100vh;
+  overflow: auto;
 }
 
 /* Global Container */
@@ -165,4 +167,10 @@ body {
 
 .card-header { 
   margin-bottom: 10000;
+}
+
+
+
+.footer-floating {
+  position: relative;
 }
