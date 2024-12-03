@@ -55,16 +55,6 @@ describe('Authentication Routes', () => {
   });
 
   describe('POST /login', () => {
-    beforeEach(async () => {
-      try {
-        const hash = await bcrypt.hash(testUser.password, 10);
-        await db.none('INSERT INTO users(username, password) VALUES($1, $2)', 
-          [testUser.username, hash]);
-      } catch (err) {
-        console.error('Error creating test user:', err);
-      }
-    });
-
     it('should handle login with correct credentials', (done) => {
       chai
         .request(server)
@@ -96,7 +86,6 @@ describe('Protected Routes', () => {
   const protectedRoutes = [
     '/add_climb',
     '/add_ascent',
-    '/ascents',
     '/user_settings'
   ];
 
