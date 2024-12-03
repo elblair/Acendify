@@ -324,11 +324,11 @@ app.get('/profile/:userId', async (req, res) => {
       ORDER BY a.ascent_date DESC
     `;
 
-    const user = await db.one(userQuery, [userId]);
+    const user_res = await db.one(userQuery, [userId]);
     const ascents = await db.any(ascentsQuery, [userId]);
     // Pass user and ascents data to the template
     res.render('pages/user_profile', 
-      {user: req.session.user ? req.session.user : null, ascents}
+      {user_res, user: req.session.user ? req.session.user : null, ascents}
     );
   } catch (err) {
     console.error('Error fetching user profile:', err);
