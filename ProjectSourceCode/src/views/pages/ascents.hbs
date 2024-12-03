@@ -1,62 +1,139 @@
-<div class="container">
-  <div class="row mb-4">
-    <div class="col">
-      <h2>My Ascents</h2>
-      {{#if hasAscents}}
-        <p class="text-muted">Total ascents logged: {{totalAscents}}</p>
-      {{/if}}
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Ascents | Acendify</title>
+  <style>
+    body {
+      background-color: #395b49; /* Dark green background */
+      font-family: 'Times New Roman', serif;
+      color: #69bf80; /* Light green text */
+    }
 
-  {{#if hasAscents}}
-    <div class="table-responsive">
-      <table class="table table-hover">
-        <thead class="table-light">
-          <tr>
-            <th>Date</th>
-            <th>Climb</th>
-            <th>Grade</th>
-            <th>Location</th>
-            <th>Rating</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each ascents}}
-          <tr>
-            <td>{{formatDate this.ascent_date}}</td>
-            <td>{{this.climb_name}}</td>
-            <td>{{this.grade}}</td>
-            <td>{{this.location}}</td>
-            <td>
-              {{#if this.rating}}
-                {{this.rating}}/5
-              {{else}}
-                -
-              {{/if}}
-            </td>
-            <td>
-              <a href="/edit_ascent/{{this.ascent_id}}" class="btn btn-sm btn-primary">
-                <i class="fas fa-edit"></i> Edit
-              </a>
-            </td>
-          </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-  {{else}}
-    <div class="card">
-      <div class="card-body text-center py-5">
-        <h3 class="card-title mb-3">No Ascents Yet</h3>
-        <p class="card-text text-muted mb-4">
-          Welcome {{username}}! You haven't logged any climbs yet. 
-          Start by logging your first ascent!
-        </p>
-        <a href="/add_ascent" class="btn btn-lg btn-primary">
-          <i class="fas fa-plus"></i> Log Your First Ascent
-        </a>
+    .container {
+      margin-top: 50px;
+      max-width: 900px;
+      background-color: #a2e2a3; /* Light green background */
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      color: #395b49; /* Dark green for header */
+      margin-bottom: 20px;
+    }
+
+    .text-muted {
+      color: #395b49 !important; /* Muted text in dark green */
+    }
+
+    .table {
+      background-color: white; /* Keep table background white for contrast */
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .table th {
+      background-color: #69bf80; /* Light green header */
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .table td {
+      text-align: center;
+      color: #395b49; /* Dark green text */
+    }
+
+    .btn-primary {
+      background-color: #395b49; /* Dark green button */
+      border: none;
+      color: #a2e2a3; /* Light green text */
+      padding: 5px 10px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background-color: white;
+      color: #395b49; /* Dark green text on hover */
+    }
+
+    .card {
+      background-color: #a2e2a3; /* Light green background for card */
+      border-radius: 10px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-title {
+      color: #395b49; /* Dark green for title */
+    }
+
+    .card-text {
+      color: #69bf80; /* Light green for card text */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>My Ascents</h2>
+    {{#if hasAscents}}
+      <p class="text-muted">Total ascents logged: {{totalAscents}}</p>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Climb</th>
+              <th>Grade</th>
+              <th>Location</th>
+              <th>Rating</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each ascents}}
+            <tr>
+              <td>{{formatDate this.ascent_date}}</td>
+              <td>{{this.climb_name}}</td>
+              <td>{{this.grade}}</td>
+              <td>{{this.location}}</td>
+              <td>
+                {{#if this.rating}}
+                  {{this.rating}}/5
+                {{else}}
+                  -
+                {{/if}}
+              </td>
+              <td>
+                <a href="/edit_ascent/{{this.ascent_id}}" class="btn btn-primary">
+                  Edit
+                </a>
+              </td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
       </div>
-    </div>
-  {{/if}}
-</div>
+    {{else}}
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">No Ascents Yet</h3>
+          <p class="card-text">
+            Welcome {{username}}! You haven't logged any climbs yet. 
+            Start by logging your first ascent!
+          </p>
+          <a href="/add_ascent" class="btn btn-primary">
+            Log Your First Ascent
+          </a>
+        </div>
+      </div>
+    {{/if}}
+  </div>
+</body>
+</html>

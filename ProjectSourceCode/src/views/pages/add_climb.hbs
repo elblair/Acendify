@@ -1,27 +1,84 @@
-<div class="container">
-  <h2>Add New Climb</h2>
-  <form action="/add_climb" method="POST">
-    <div class="mb-3">
-      <label for="name" class="form-label">Climb Name</label>
-      <input type="text" class="form-control" id="name" name="name" required>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Add New Climb | Acendify</title>
+  <style>
+    body {
+      background-color: #395b49; /* Dark green background */
+      font-family: 'Times New Roman', serif;
+      color: #69bf80; /* Light green text */
+    }
 
-    <div class="mb-3">
-      <label for="location" class="form-label">Location</label>
-      <input type="text" class="form-control" id="location" name="location">
-    </div>
+    .container {
+      margin-top: 50px;
+      max-width: 600px;
+      background-color: #a2e2a3; /* Light green background */
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-    <div class="mb-3">
-      <label for="grade" class="form-label">Grade</label>
-      <input type="text" class="form-control" id="grade" name="grade" maxlength="10">
-    </div>
+    h2 {
+      text-align: center;
+      color: #395b49; /* Dark green for header */
+      margin-bottom: 20px;
+    }
 
-    <div class="mb-3">
-      <label for="rating" class="form-label">Rating (0.00 - 5.00)</label>
-      <input type="number" class="form-control" id="rating" name="rating" 
-             min="0" max="5" step="0.01">
-    </div>
+    .form-label {
+      font-weight: bold;
+      color: #395b49; /* Dark green for labels */
+    }
 
-    <button type="submit" class="btn btn-primary">Add Climb</button>
-  </form>
-</div>
+    .form-control {
+      border-radius: 5px;
+      border: 1px solid #395b49; /* Dark green border */
+    }
+
+    .btn-primary {
+      background-color: #395b49; /* Dark green button */
+      border: none;
+      color: #a2e2a3; /* Light green text */
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn-primary:hover {
+      background-color: white;
+      color: #395b49; /* Dark green text on hover */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Add New Climb</h2>
+    <form action="/add_climb" method="POST">
+      <div class="mb-3">
+        <label for="name" class="form-label">Climb Name</label>
+        <input type="text" class="form-control" id="name" name="name" required>
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" class="form-control" id="location" name="location">
+      </div>
+
+      <div class="mb-3">
+        <label for="grade" class="form-label">Grade</label>
+        <input type="text" class="form-control" id="grade" name="grade" maxlength="10">
+      </div>
+
+      <div class="mb-3">
+        <label for="rating" class="form-label">Rating (0.00 - 5.00)</label>
+        <input type="number" class="form-control" id="rating" name="rating" 
+               min="0" max="5" step="0.01">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Climb</button>
+    </form>
+  </div>
+</body>
+</html>

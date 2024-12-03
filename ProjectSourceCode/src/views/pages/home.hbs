@@ -8,45 +8,38 @@
     body {
       margin: 0;
       font-family: 'Times New Roman', Times, serif;
-      background-color: #a2e2a3; /* Granny Smith */
+      background-color: #a2e2a3; /* Light green background */
     }
 
-    header {
-      background-color: #395b49; /* Mineral Green */
-      color: #f4e1a4; /* Sandwisp */
+    .title {
       text-align: center;
-      padding: 20px;
-      font-size: 1.5rem;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+      color: #395b49; /* Dark green for text */
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 10px;
     }
 
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 20px;
+      margin-top: 5px;
     }
 
     .card {
-      background-color: #395b49; 
+      background-color: #395b49; /* Dark green card background */
       border-radius: 10px;
       width: 90%;
       max-width: 600px;
       margin-bottom: 20px;
       padding: 15px;
       box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      color: #f4e1a4; /* Sandwisp */
+      color: white; /* Light green text */
     }
 
     .card h3 {
       margin-top: 0;
-      color: #69bf80; /* De York */
-    }
-
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-top: 10px;
+      color: #a2e2a3; /* Light green for headings */
     }
 
     .card-footer {
@@ -55,37 +48,12 @@
       align-items: center;
       margin-top: 10px;
     }
-
-    .like-button {
-      background-color: #69bf80; /* De York */
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .like-button:hover {
-      background-color: #f4e1a4; /* Sandwisp */
-      color: #395b49; /* Mineral Green */
-    }
-
-    .like-count {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      color: #f4e1a4; /* Sandwisp */
-    }
-
-    .like-count i {
-      margin-left: 5px;
-      color: #e77e23; /* Zest */
-    }  </style>
+  </style>
 </head>
 <body>
 
-<header>Acendify</header>
+<!-- Replace the header bar with just a title -->
+<div class="title">Acendify</div>
 
 <div class="container" id="content-container"></div>
 
@@ -94,13 +62,12 @@
   let loading = false;
   let offset = 0;
   const limit = 5;
+
   async function fetchAscents() {
     try {
       const response = await fetch(`/api/ascents?limit=${limit}&offset=${offset}`);
-      console.log('Response:', response);
       if (!response.ok) throw new Error(`Error fetching ascents: ${response.statusText}`);
       const data = await response.json();
-      console.log('Fetched data:', data);
       return data;
     } catch (error) {
       console.error('Fetch error:', error.message);
@@ -110,7 +77,6 @@
 
   function createCard(ascent, climbs, users) {
     const climb = climbs.find(c => c.climb_id === ascent.climb_id);
-    console.log(users)
     const user = users.find(u => u.user_id === ascent.user_id);
     const card = document.createElement('div');
     card.className = 'card';

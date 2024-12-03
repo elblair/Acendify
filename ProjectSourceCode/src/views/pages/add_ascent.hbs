@@ -1,60 +1,111 @@
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-8">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="mb-0">Log New Ascent</h2>
-        </div>
-        <div class="card-body">
-          {{#if error}}
-            <div class="alert alert-danger" role="alert">
-              {{error}}
-            </div>
-          {{/if}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Log New Ascent | Acendify</title>
+  <style>
+    body {
+      background-color: #395b49; /* Dark green background */
+      font-family: 'Times New Roman', serif;
+      color: #69bf80; /* Light green text */
+    }
 
-          <form action="/add_ascent" method="POST">
-            <div class="mb-3">
-              <label for="climb_id" class="form-label">Select Climb *</label>
-              <select class="form-select" id="climb_id" name="climb_id" required>
-                <option value="">Choose a climb...</option>
-                {{#each climbs}}
-                  <option value="{{this.climb_id}}">
-                    {{this.name}} - {{this.grade}} - {{this.location}}
-                  </option>
-                {{/each}}
-              </select>
-            </div>
+    .container {
+      margin-top: 50px;
+      max-width: 600px;
+      background-color: #a2e2a3; /* Light green background */
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
 
-            <div class="mb-3">
-              <label for="ascent_date" class="form-label">Date of Ascent</label>
-              <input type="date" class="form-control" id="ascent_date" name="ascent_date" 
-                     value="{{formatDate currentDate}}">
-            </div>
+    h2 {
+      text-align: center;
+      color: #395b49; /* Dark green for header */
+      margin-bottom: 20px;
+    }
 
-            <div class="mb-3">
-              <label for="suggested_grade" class="form-label">Suggested Grade</label>
-              <input type="text" class="form-control" id="suggested_grade" name="suggested_grade" 
-                     maxlength="10" placeholder="e.g., V5, 5.12a">
-            </div>
+    .form-label {
+      font-weight: bold;
+      color: #395b49; /* Dark green for labels */
+    }
 
-            <div class="mb-3">
-              <label for="rating" class="form-label">Rating (0.00 - 5.00)</label>
-              <input type="number" class="form-control" id="rating" name="rating" 
-                     min="0" max="5" step="0.01" placeholder="Rate from 0 to 5">
-            </div>
+    .form-control, .form-select, .textarea {
+      border-radius: 5px;
+      border: 1px solid #395b49; /* Dark green border */
+    }
 
-            <div class="mb-3">
-              <label for="comment" class="form-label">Comment</label>
-              <textarea class="form-control" id="comment" name="comment" rows="3" 
-                        placeholder="Share your experience..."></textarea>
-            </div>
+    .btn-primary {
+      background-color: #395b49; /* Dark green button */
+      border: none;
+      color: #a2e2a3; /* Light green text */
+      padding: 10px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
 
-            <div class="d-grid gap-2">
-              <button type="submit" class="btn btn-primary">Log Ascent</button>
-            </div>  
-          </form>
-        </div>
+    .btn-primary:hover {
+      background-color: white;
+      color: #395b49; /* Dark green text on hover */
+    }
+
+    .alert-danger {
+      background-color: #ffcccc;
+      color: #990000;
+      border-radius: 5px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Log New Ascent</h2>
+    {{#if error}}
+      <div class="alert alert-danger" role="alert">
+        {{error}}
       </div>
-    </div>
+    {{/if}}
+    <form action="/add_ascent" method="POST">
+      <div class="mb-3">
+        <label for="climb_id" class="form-label">Select Climb *</label>
+        <select class="form-select" id="climb_id" name="climb_id" required>
+          <option value="">Choose a climb...</option>
+          {{#each climbs}}
+            <option value="{{this.climb_id}}">
+              {{this.name}} - {{this.grade}} - {{this.location}}
+            </option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="mb-3">
+        <label for="ascent_date" class="form-label">Date of Ascent</label>
+        <input type="date" class="form-control" id="ascent_date" name="ascent_date" 
+               value="{{formatDate currentDate}}">
+      </div>
+
+      <div class="mb-3">
+        <label for="suggested_grade" class="form-label">Suggested Grade</label>
+        <input type="text" class="form-control" id="suggested_grade" name="suggested_grade" 
+               maxlength="10" placeholder="e.g., V5, 5.12a">
+      </div>
+
+      <div class="mb-3">
+        <label for="rating" class="form-label">Rating (0.00 - 5.00)</label>
+        <input type="number" class="form-control" id="rating" name="rating" 
+               min="0" max="5" step="0.01" placeholder="Rate from 0 to 5">
+      </div>
+
+      <div class="mb-3">
+        <label for="comment" class="form-label">Comment</label>
+        <textarea class="form-control" id="comment" name="comment" rows="3" 
+                  placeholder="Share your experience..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-primary">Log Ascent</button>
+    </form>
   </div>
-</div>
+</body>
+</html>
