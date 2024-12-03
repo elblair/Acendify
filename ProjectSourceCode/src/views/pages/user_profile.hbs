@@ -1,0 +1,42 @@
+<body>
+  <div class="site-container">
+    <div class="card">
+      <h2>{{user_res.full_name}}</h2>
+      <p><strong>Username:</strong> {{user_res.username}}</p>
+      <p><strong>Age:</strong> {{user_res.age}}</p>
+      <p><strong>Height:</strong> {{user_res.height_feet}}' {{user_res.height_inches}}"</p>
+      <p><strong>Span:</strong> {{user_res.span_feet}}' {{user_res.span_inches}}"</p>
+      <p><strong>Account Created:</strong> {{formatDate user_res.created_at}}</p>
+    </div>
+
+    <div class="card">
+      {{#if ascents.length}}
+        <h3>Ascents:</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Climb Name</th>
+              <th>Comment</th>
+              <th>Suggested Grade</th>
+              <th>Rating</th>
+              <th>Ascent Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each ascents}}
+              <tr>
+                <td>{{climb_name}}</td>
+                <td>{{comment}}</td>
+                <td>{{#if suggested_grade}}{{suggested_grade}}{{else}}N/A{{/if}}</td>
+                <td>{{#if rating}}{{rating}}{{else}}N/A{{/if}}</td>
+                <td>{{formatDate ascent_date}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      {{else}}
+        <p>No ascents yet.</p>
+      {{/if}}
+    </div>
+  </div>
+</body>

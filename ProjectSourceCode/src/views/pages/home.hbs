@@ -1,17 +1,12 @@
-<!DOCTYPE html>
-<html land="en">
-    <head>
-        {{!-- <link rel="stylesheet" href="style.css"> --}}
-        {{!-- <script src="../../search.js"></script> --}}
-        {{!-- <script src="../../../src/search.js"></script>
-        <script src="../../src/index.js"></script> --}}
-        {{!-- <script src="http://localhost:3000/src/search.js"></script> --}}
-        <script src="/src/search.js"></script>
-        <script src="/src/index.js"></script>
-    </head>
+<head>
+  <title> Home | Ascendify</title>
+</head>
+
 <body>
-    <div class="container">
-        <div class="row">
+<div class="brand-title">ACENDIFY</div>
+<div class="site-container" id="content-container"></div>
+
+<div class="row">
             <div class="col-3 left-side">
                 <div class="search-container">
                     <p style="position: fixed; top: 100px;">SEARCH FOR CLIMBERS:</p>
@@ -44,45 +39,65 @@
                         </template>
                 </div>
             </div>
-            {{!-- <script src="../../search.js"></script> --}}
-            <div class="col-6 middle">
-                <div id="scrollable-content" style="overflow-y: scroll; height: 100vh;">
-                    <div id="scrollable-content-inner">
-                    <h2>Possible implementation for infinite scroll sans react</h2>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    <p>Some text..</p>
-                    </div>
-                </div>
-            </div>
-            </div>
-        </div>
-    </div>
+<script>
+  const contentContainer = document.getElementById('content-container');
+  let loading = false;
+  let offset = 0;
+  const limit = 5;
+  async function fetchAscents() {
+    try {
+      const response = await fetch(`/api/ascents?limit=${limit}&offset=${offset}`);
+      console.log('Response:', response);
+      if (!response.ok) throw new Error(`Error fetching ascents: ${response.statusText}`);
+      const data = await response.json();
+      console.log('Fetched data:', data);
+      return data;
+    } catch (error) {
+      console.error('Fetch error:', error.message);
+      return [];
+    }
+  }
 
-    {{!-- <script src="/scroll.js"></script>  --}}
+  function createCard(ascent, climbs, users) {
+    const climb = climbs.find(c => c.climb_id === ascent.climb_id);
+    console.log(users)
+    const user = users.find(u => u.user_id === ascent.user_id);
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-header"><a class= "link-header" href="/profile/${user.user_id}">User: ${user ? user.username : 'Unknown'}</a></div>
+      <p>Climb: ${climb ? climb.name : 'Unknown'}</p>
+      <p>Comment: ${ascent.comment || 'No comment'}</p>
+      <p>Suggested Grade: V${ascent.suggested_grade || 'N/A'}</p>
+      <p>Rating: ${ascent.rating || 'N/A'}/5</p>
+    `;
+    return card;
+  }
+
+  async function loadAscents() {
+    if (loading) return;
+    loading = true;
+    const res = await fetchAscents();
+
+    if (res[0].length === 0) {
+      loading = false;
+      return;
+    }
+    res[0].forEach(ascent => {
+      const card = createCard(ascent, res[1], res[2]);
+      contentContainer.appendChild(card);
+    });
+    offset += limit; 
+    loading = false;
+  }
+
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
+      loadAscents();
+    }
+  });
+  
+  loadAscents();
+</script>
+
 </body>
-
-</html>

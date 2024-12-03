@@ -10,3 +10,7 @@ home page mockup with *potential* infinite scroll
 
 functionality for login, register, add climb, add acsent, view logged in users ascents, user settings page -> 
 (in future this will allow user to edit user icon, dimensions (height and wingspan), gender....) 
+
+Week of Nov 22nd:
+
+Added to database various user traits to be updated in the user settings page, fleshed out home page and nav bar features

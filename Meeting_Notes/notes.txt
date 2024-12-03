@@ -1,0 +1,47 @@
+Week of Nov 8th:
+
+Talked about were to go for next week, basics of git branching, design, what frameworks we want to use...
+
+Plan for next week: Flesh out pages, hopefully get a home page up and running with nav bar and feed. 
+
+Week of Nov 15th: 
+
+Talked about using potentially using react for easier implementation of some frontend stuff (endless scroll feed...)
+
+Plans for next week. Flesh out homepage more, add leaderboard page with some ranking for users, user settings, user profile page (can view self or any other user), searchbars ...? 
+
+Week of Nov 22th: 
+
+Features to implement next week.
+  
+  Profile page: 
+  
+  User settings page: 
+  
+  feed: 
+  
+  friends: 
+
+  test suite for add climb, add acsent
+
+  notes:
+  Need to do:
+    Hyperlink to friends profile
+    Conditional hyperlink
+    If user id = session user id
+
+    Logged out
+    Newest added to database
+
+    Logged in
+    Show friends most recent
+    
+    ^ Following page vs explore page
+
+    Leaderboard ideas: 
+      Toughest climb finished that day/week
+      Go by grade
+      Sum points by grade
+      Total grade * 100
+    Search bar where profile button is on homepage
+

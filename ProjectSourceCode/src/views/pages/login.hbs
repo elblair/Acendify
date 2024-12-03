@@ -1,100 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  {{> head }} <!-- Include head partial for meta tags and CSS links -->
-  <title>Login | Acendify</title>
-  <style>
-    body {
-      background-color: #395b49; /* dark green from chosen color scheme for background */
-      font-family: 'Times New Roman', serif;
-    }
 
-    .login-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
 
-    .brand-title {
-      font-size: 4.0rem;
-      font-weight: bold;
-      color: #69bf80;
-      margin-bottom: 20px;
-    }
-
-    .form-container {
-      background: #a2e2a3;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      margin-top: 20px;
-    }
-
-    .form-container label {
-      font-weight: 600;
-    }
-
-    .form-container input {
-      border-radius: 5px;
-    }
-
-    .login-btn {
-      background-color: #395b49;
-      border: none;
-      border-radius: 5px;
-      color: #a2e2a3;
-      padding: 10px;
-      width: 100%;
-      margin-top: 15px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .login-btn:hover {
-      background-color: white;
-    }
-
-    .register-link {
-      margin-top: 15px;
-      text-align: center;
-    }
-
-    .register-link a {
-      color: white;
-      text-decoration: none;
-    }
-
-    .register-link a:hover {
-      text-decoration: underline;
-    }
-
-    .description {
-      color: white;
-      text-align: center;
-      margin: 0 auto; /* Ensures the element is horizontally centered */
-      max-width: 600px; /* Limits the width for better readability */
-    }
-  </style>
-</head>
 <body>
-  {{> nav }} <!-- Include navigation bar partial -->
-
-  <div class="login-container">
+  <div class="site-container">
     <div class="brand-title">ACENDIFY</div>
-    <p style="color: white; text-align: center;" class="description">
-      Log in to Acendify to track your climbing progress, explore new routes, and connect with a community of climbers across America!
-    </p>
-    <div class="form-container">
-      <h3 style="color: #395b49" class="text-center mb-3">Login to Your Account</h3>
-      {{> message }} <!-- Include partial for messages (e.g., errors, success) -->
+    <div
+    <div class="form-wrapper">
+      <h3 class="text-center mb-3" style="color: var(--color-primary)">Login</h3>
+      
+      {{> message }}
+      
       <form method="POST" action="/login">
-        <!-- Username -->
-        <div class="mb-3">
-          <label style="color: #395b49" for="username" class="form-label">Username</label>
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
           <input 
             type="text" 
             class="form-control" 
@@ -103,9 +20,9 @@
             required 
           />
         </div>
-        <!-- Password -->
-        <div class="mb-3">
-          <label style="color: #395b49" for="password" class="form-label">Password</label>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
           <input 
             type="password" 
             class="form-control" 
@@ -114,16 +31,13 @@
             required 
           />
         </div>
-        <!-- Login Button -->
-        <button type="submit" class="login-btn">Login</button>
+        
+        <button type="submit" class="btn btn-primary">Register</button>
       </form>
-      <!-- Register Link -->
-      <div class="register-link">
-        Don't have an account? <a href="/register">Register</a>
+      
+      <div class="link-container">
+        Don't have an account? <a href="/register" class="link">Register</a>
       </div>
     </div>
   </div>
-
-  {{> footer }} <!-- Include footer partial -->
 </body>
-</html>
