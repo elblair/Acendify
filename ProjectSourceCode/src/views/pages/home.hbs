@@ -1,17 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title> Home | Ascendify</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acendify - Home</title>
 </head>
-
 <body>
 <div class="brand-title">ACENDIFY</div>
 <div class="site-container" id="content-container"></div>
-
-<div class="row">
+    <div class="row">
             <div class="col-3 left-side">
                 <div class="search-container">
                     <p style="position: fixed; top: 100px;">SEARCH FOR CLIMBERS:</p>
-                    {{!-- <input type="search" id="search" placeholder="..." value="{{searchQuery}}" style="position: fixed; top: 120px;"> --}}
-                    <input type="search" id="search" placeholder="..." data-search style="position: fixed; top: 120px;">
+                    <input type="search" id="searchclimbers" placeholder="Search for Climbers..." data-search style="position: fixed; top: 120px;">
                     <button type="button" onclick="performSearch()" style="position: fixed; top: 155px;">Search</button>
                     <ul id="searchResults"></ul>
                     <div class="user-cards" data-user-cards-container></div>
@@ -24,8 +25,7 @@
                 </div>
                 <div class="search-container">
                     <p style="position: fixed; top: 200px;">SEARCH FOR ROUTES:</p>
-                    {{!-- <input type="search" id="search" placeholder="..." value="{{searchQuery}}" style="position: fixed; top: 120px;"> --}}
-                    <input type="search" id="search" placeholder="..." data-search style="position: fixed; top: 220px;">
+                    <input type="search" id="searchroutes" placeholder="Search for Routes..." data-search style="position: fixed; top: 220px;">
                     <button type="button" onclick="performSearch()" style="position: fixed; top: 255px;">Search</button>
                     <ul id="searchResults"></ul>
                     <div class="user-cards" data-user-cards-container></div>
@@ -39,6 +39,7 @@
                         </template>
                 </div>
             </div>
+    </div>
 <script>
   const contentContainer = document.getElementById('content-container');
   let loading = false;
