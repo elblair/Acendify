@@ -1,93 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acendify - Home</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Times New Roman', Times, serif;
-      background-color: #a2e2a3; /* Granny Smith */
-    }
-
-    header {
-      background-color: #395b49; /* Mineral Green */
-      color: #f4e1a4; /* Sandwisp */
-      text-align: center;
-      padding: 20px;
-      font-size: 1.5rem;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-top: 20px;
-    }
-
-    .card {
-      background-color: #395b49; 
-      border-radius: 10px;
-      width: 90%;
-      max-width: 600px;
-      margin-bottom: 20px;
-      padding: 15px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      color: #f4e1a4; /* Sandwisp */
-    }
-
-    .card h3 {
-      margin-top: 0;
-      color: #69bf80; /* De York */
-    }
-
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-top: 10px;
-    }
-
-    .card-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .like-button {
-      background-color: #69bf80; /* De York */
-      color: white;
-      border: none;
-      border-radius: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .like-button:hover {
-      background-color: #f4e1a4; /* Sandwisp */
-      color: #395b49; /* Mineral Green */
-    }
-
-    .like-count {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      color: #f4e1a4; /* Sandwisp */
-    }
-
-    .like-count i {
-      margin-left: 5px;
-      color: #e77e23; /* Zest */
-    }  </style>
+  <title> Home | Ascendify</title>
 </head>
+
 <body>
-
-<header>Acendify</header>
-
-<div class="container" id="content-container"></div>
+<div class="brand-title">ACENDIFY</div>
+<div class="site-container" id="content-container"></div>
 
 <script>
   const contentContainer = document.getElementById('content-container');
@@ -115,7 +32,7 @@
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
-      <h3>User: ${user ? user.username : 'Unknown'}</h3>
+      <div class="card-header"><a class= "link-header" href="/profile/${user.user_id}">User: ${user ? user.username : 'Unknown'}</a></div>
       <p>Climb: ${climb ? climb.name : 'Unknown'}</p>
       <p>Comment: ${ascent.comment || 'No comment'}</p>
       <p>Suggested Grade: V${ascent.suggested_grade || 'N/A'}</p>
@@ -151,4 +68,3 @@
 </script>
 
 </body>
-</html>

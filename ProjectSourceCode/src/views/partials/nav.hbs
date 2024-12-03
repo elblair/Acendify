@@ -1,4 +1,4 @@
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="width: 100%; top: 0; z-index: 100;">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
       <a class="navbar-brand" href="/"></a>
       <ul class="navbar-nav mr-auto">
@@ -11,59 +11,21 @@
         <li class="nav-item">
             <a class="nav-link" href="/add_climb">Add Climb</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" href="/ascents">My Ascents</a>
-        </li>
       </ul>
     </div>
-    {{#if username}}
-      <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
-        <p id="toggle-menu">{{ username }}</p>
-        <div class="navbar_profile_click" id="menu">
-          <ul style="list-style: none; margin-bottom: 0;">
-            <li><a href="/profile">Profile</a></li>
-            <li><a href="/user_settings">User Settings</a></li>
-          </ul>
-          <span class="navbar-profile-barrier"></span>
-          <ul style="list-style: none; margin-bottom: 0.25rem;">
-            <li><a href="/logout">Logout</a></li>
-          </ul>
-          
-        </div>
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            const toggleButton = document.getElementById("toggle-menu");
-            const menu = document.getElementById("menu");
-
-            toggleButton.addEventListener("click", function () {
-              if (menu.style.display === "block") {
-                menu.style.display = "none";
-              } else {
-                menu.style.display = "block";
-              }
-            });
-
-            // Optional: Close menu when clicking outside
-            document.addEventListener("click", function (event) {
-              if (!toggleButton.contains(event.target) && !menu.contains(event.target)) {
-                menu.style.display = "none";
-              }
-            });
-          });
-        </script>
-      </div>
-      
-
-
+    {{#if user}}
       <div class="navbar-collapse collapse order-3 dual-collapse2">
         <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/user_settings">
-              {{ username }}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{user.username}}
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">logout</a>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/user_settings">Settings</a>
+              <a class="dropdown-item" href="/profile/{{user.id}}">Profile</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </div>
           </li>
         </ul>
       </div>
@@ -78,3 +40,12 @@
     {{/if}}
   </nav>
   </nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var dropdownElementList = [].slice.call(document.querySelectorAll('.dropdown-toggle'))
+    var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+      return new bootstrap.Dropdown(dropdownToggleEl)
+    })
+  });
+</script>

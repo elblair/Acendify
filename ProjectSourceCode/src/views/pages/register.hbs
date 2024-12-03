@@ -1,97 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
 <head>
   <title>Register | Acendify</title>
-  <style>
-    body {
-      background-color: #395b49; 
-      font-family: 'Times New Roman', serif;
-    }
-
-    .register-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-    }
-
-    .brand-title {
-      font-size: 4.0rem;
-      font-weight: bold;
-      color: #69bf80;
-      margin-bottom: 20px;
-    }
-
-    .form-container {
-      background: #a2e2a3;
-      border-radius: 10px;
-      padding: 30px;
-      box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-      margin-top: 20px;
-    }
-
-    .form-container label {
-      font-weight: 600;
-    }
-
-    .form-container input {
-      border-radius: 5px;
-    }
-
-    .register-btn {
-      background-color: #395b49;
-      border: none;
-      border-radius: 5px;
-      color: #a2e2a3;
-      padding: 10px;
-      width: 100%;
-      margin-top: 15px;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .register-btn:hover {
-      background-color: white;
-    }
-
-    .login-link {
-      margin-top: 15px;
-      text-align: center;
-    }
-
-    .login-link a {
-      color: white;
-      text-decoration: none;
-    }
-
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-
-    .description {
-      color: white;
-      text-align: center;
-      margin: 0 auto;
-      max-width: 600px; 
-    }
-
-
-  </style>
 </head>
 <body>
-  <div class="register-container">
+  <div class="site-container">
     <div class="brand-title">ACENDIFY</div>
-    <p style="color: white; text-align: center;" class="description">
-    </p>
-    <div class="form-container">
-      <h3 style="color: #395b49" class="text-center mb-3">Create Your Account</h3>
+    
+    <div class="form-wrapper">
+      <h3 class="text-center mb-3" style="color: var(--color-primary)">Create Your Account</h3>
+      
       {{> message }}
+      
       <form method="POST" action="/register">
-        <div class="mb-3">
-          <label style="color: #395b49" for="username" class="form-label">Username</label>
+        <div class="form-group">
+          <label for="username" class="form-label">Username</label>
           <input 
             type="text" 
             class="form-control" 
@@ -100,8 +21,9 @@
             required 
           />
         </div>
-        <div class="mb-3">
-          <label style="color: #395b49" for="password" class="form-label">Password</label>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
           <input 
             type="password" 
             class="form-control" 
@@ -110,13 +32,14 @@
             required 
           />
         </div>
-        <button type="submit" class="register-btn">Register</button>
+        
+        <button type="submit" class="btn btn-primary">Register</button>
       </form>
-      <div class="login-link">
-        Already have an account? <a href="/login">Login</a>
+      
+      <div class="link-container">
+        Already have an account? <a href="/login" class="link">Login</a>
       </div>
     </div>
   </div>
-
 </body>
-</html>
+  
