@@ -175,10 +175,10 @@ body {
 
 /* for search bar */
 
+
 .hide {
   display: none !important;
 }
-
 
 .card3{
   position: fixed;
@@ -203,7 +203,8 @@ body {
 
 .user-cards3 {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  flex-direction: column; /* Stack cards vertically */
+  gap: var(--spacing-sm); /* Space between cards */
   gap: 1rem;
 }
 
