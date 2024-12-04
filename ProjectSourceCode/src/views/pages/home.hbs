@@ -10,37 +10,23 @@
 <div class="site-container" id="content-container"></div>
     <div class="row">
             <div class="col-3 left-side">
-                <div class="search-container">
-                    <p style="position: fixed; top: 100px;">SEARCH FOR CLIMBERS:</p>
-                    <input type="search" id="search" placeholder="Search for Climbers..." data-search style="position: fixed; top: 120px; left: 20px;">
-                    <button type="button" onclick="performSearch()" style="position: fixed; top: 155px; left: 20px;">Search</button>
+                <div class="search-wrapper">
+                    <form class ="search">
+                        <label for ="search">Search Users</label>
+                        <input type="search" id="search" placeholder="Search..." data-search style="position: fixed; top: 120px; left: 20px;">
+                        {{!-- <button type="submit" style="position: fixed; top: 155px; left: 20px;">Search</button> --}}
+                    </form>
                     <ul id="searchResults"></ul>
-                    <div class="user-cards" data-user-cards-container></div>
-                        <template data-user-template="">
-                            <div class="card">
-                                <div class="header" style="position: fixed; top: 200px;"></div>
-                                <div class="body" style="position: fixed; top: 220px;"></div>
-                            </div>
-                        </template>
-                </div>
-                <div class="search-container">
-                    <p style="position: fixed; top: 200px;">SEARCH FOR ROUTES:</p>
-                    <input type="search" id="searchroutes" placeholder="Search for Routes..." data-search style="position: fixed; top: 220px; left: 20px;">
-                    <button type="button" onclick="performSearch()" style="position: fixed; top: 255px; left: 20px;">Search</button>
-                    <ul id="searchResults"></ul>
-                    <div class="user-cards" data-user-cards-container></div>
-                        <template data-user-template="">
-                            <div class="card">
-                                {{!-- Changed header to header route --}}
-                                <div class="headerclimb" style="position: fixed; top: 200px;"></div> 
-                                {{!-- Changed body to body route --}}
-                                <div class="bodyclimb" style="position: fixed; top: 220px;"></div>
-                            </div>
-                        </template>
+                        <div class="user-cards3" data-user-cards-container></div>
+                            <template data-user-template>
+                                <div class="card3">
+                                    <div data-header class="card3-header"></div>
+                                    <div data-body class="card3-body"></div>
+                                </div>
+                            </template>
                 </div>
             </div>
-    </div>
-    <script>
+        <script>
         // SECTION FOR CLIMBER SEARCH
     const userCardTemplate = document.querySelector("[data-user-template]");
     const userCardContainer = document.querySelector("[data-user-cards-container]");
@@ -50,15 +36,17 @@
 
     searchInput.addEventListener("input", e =>{
         const value = e.target.value.toLowerCase()
+        console.log(value);
+        console.log(users);
         users.forEach(user =>{
             const isVisible = 
                 user.name.toLowerCase().includes(value) || 
-                user.email.toLowerCase().includes(value)
-            user.element.classList.toggle("hide", !isVisible)
-        })
+                user.email.toLowerCase().includes(value);
+            user.element.classList.toggle("hide", !isVisible);
+        });
     });
 
-    fetch("https://jsonplaceholder.typicode.com") //dummy practice API for checking if this thing works
+    fetch("https://jsonplaceholder.typicode.com/users") //dummy practice API for checking if this thing works
     .then(res => res.json())
     .then(data =>{
         users = data.map(user => {
@@ -72,42 +60,8 @@
             return {name: user.name, email: user.email, element: card};
         });
     })
-
-    //SECTION FOR ROUTE SEARCH
-
-    const userCardTemplateClimbs = document.querySelector("[data-user-template]");
-    const userCardContainerClimbs = document.querySelector("[data-user-cards-container]");
-    const searchInputClimbs = document.querySelector("[data-search]");
-
-    let climbs = [];
-
-    searchInputClimbs.addEventListener("input", e =>{
-         const value = e.target.value.toLowerCase()
-         climbs.forEach(climb =>{
-             const isVisible = 
-                 climb.name.toLowerCase().includes(value) ||  //added a route name search
-                 climb.grade.toLowerCase().includes(value) //added a route grade search
-             climb.element.classList.toggle("hide", !isVisible)
-         })
-     });
-
-     fetch("https://jsonplaceholder.typicode.com") //dummy practice API for checking if this thing works
-     .then(res => res.json())
-     .then(data =>{
-         climbs = data.map(user => {
-             const cardroute = userCardTemplateClimbs.content.cloneNode(true).children[0];
-             const headerroute = card.querySelector("[data-header]");
-             const bodyroute = card.querySelector("[data-body]");
-             headerroute.textContent = climb.name;
-             bodyroute.textContent = climb.grade;
-             bodyroute.textContent = climb.rating;
-             bodyroute.textContent = climb.locatoin;
-             userCardContainerClimbs.append(cardroute);
-             // console.log(user);
-             return {name: climb.name, grade: climb.grade, element: card};
-         });
-     })
   </script>
+    </div>
 <script>
   const contentContainer = document.getElementById('content-container');
   let loading = false;
