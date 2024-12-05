@@ -282,7 +282,6 @@ body {
 
 .footer-floating {
   position: relative;
-<<<<<<< HEAD
 }
 
 .card input {
@@ -311,7 +310,3 @@ body {
 .profile-option img.selected {
   border-color: #007bff; /* Highlight for selected picture */
 }
-
-=======
-}
->>>>>>> 8ebd21217e317ea15520ec9d0b04107172f19c8b
