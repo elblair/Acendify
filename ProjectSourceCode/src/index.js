@@ -344,7 +344,6 @@ app.get('/profile/:userId', async (req, res) => {
 app.get('/api/search', async (req, res) => {
   const { searchstring, limit = 10 } = req.query;
 
-  // Validate input
   if (!searchstring || searchstring.trim() === '') {
     return res.status(400).json({ 
       error: 'Search string is required' 
@@ -352,7 +351,6 @@ app.get('/api/search', async (req, res) => {
   }
 
   try {
-    // Search users
     const usersQuery = `
       SELECT 
         user_id, 
@@ -368,7 +366,6 @@ app.get('/api/search', async (req, res) => {
       LIMIT $2
     `;
 
-    // Search climbs
     const climbsQuery = `
       SELECT 
         climb_id, 
@@ -383,16 +380,13 @@ app.get('/api/search', async (req, res) => {
       LIMIT $2
     `;
 
-    // Use parameterized query with wildcard search
     const searchParam = `%${searchstring}%`;
 
-    // Execute both queries concurrently
     const [usersResult, climbsResult] = await Promise.all([
       db.query(usersQuery, [searchParam, limit]),
       db.query(climbsQuery, [searchParam, limit])
     ]);
 
-    // Return results
     res.json({
       users: usersResult,
       climbs: climbsResult
@@ -403,6 +397,7 @@ app.get('/api/search', async (req, res) => {
     res.status(500).json({ 
       error: 'An error occurred during the search' 
     });
+  }});
 // Fetch follows information
 app.get('/followers', auth, async (req, res) => {
   try {

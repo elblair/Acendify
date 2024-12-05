@@ -250,6 +250,7 @@ body {
 
 .btn-small:hover {
   background-color: var(--color-primary);
+}
 .navbar-logo {
   height: 40px; 
   width: auto;
