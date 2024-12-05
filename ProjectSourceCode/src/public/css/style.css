@@ -169,7 +169,16 @@ body {
   margin-bottom: 10000;
 }
 
+.navbar-logo {
+  height: 40px; /* Adjust height to fit your navbar */
+  width: auto;
+  margin-left: 10px;
+}
 
+.navbar-brand {
+  display: flex;
+  align-items: center;
+}
 
 .footer-floating {
   position: relative;
