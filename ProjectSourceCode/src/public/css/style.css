@@ -169,8 +169,90 @@ body {
   margin-bottom: 10000;
 }
 
+.user-cards {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+/* for search bar */
+
+
+.hide {
+  display: none !important;
+}
+
+.card3{
+  position: fixed;
+  top: 200px; 
+  left: 20px;
+  background-color: var(--color-secondary); 
+  border-radius: 10px;
+  width: 20%;
+  margin-bottom: 20px;
+  padding: 15px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  color: var(--color-primary); /* Sandwisp */
+}
+
+.card3-header{
+  margin-bottom: 10000;
+}
+
+.card3-body{
+  margin-bottom: auto;
+}
+
+.user-cards3 {
+  display: grid;
+  flex-direction: column; /* Stack cards vertically */
+  gap: var(--spacing-sm); /* Space between cards */
+  gap: 1rem;
+}
+
+.search-result-separator {
+  border-top: 2px solid #dee2e6;
+  margin: 15px 0;
+}
+.result-item {
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.follower-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.follower-item:last-child {
+  border-bottom: none;
+}
+
+.unfollow-form {
+  margin: 0;
+}
+
+.btn-small {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.8rem;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-small:hover {
+  background-color: var(--color-primary);
+}
 .navbar-logo {
-  height: 40px; /* Adjust height to fit your navbar */
+  height: 40px; 
   width: auto;
   margin-left: 10px;
 }
@@ -200,6 +282,7 @@ body {
 
 .footer-floating {
   position: relative;
+<<<<<<< HEAD
 }
 
 .card input {
@@ -229,3 +312,6 @@ body {
   border-color: #007bff; /* Highlight for selected picture */
 }
 
+=======
+}
+>>>>>>> 8ebd21217e317ea15520ec9d0b04107172f19c8b

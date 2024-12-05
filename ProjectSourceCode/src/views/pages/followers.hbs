@@ -1,0 +1,38 @@
+<div class="site-container">
+  <h1 class="brand-title">Followers</h1>
+
+  <div class="card">
+    <h2>Users You Follow</h2>
+    {{#if follows.length}}
+      <div class="card">
+        {{#each follows}}
+          <li class="follower-item">
+            <span>{{this.full_name}} ({{this.username}})</span>
+            <form action="/unfollow" method="POST" class="unfollow-form">
+              <input type="hidden" name="followed_id" value="{{this.user_id}}">
+              <button class="btn btn-small" type="submit">Unfollow</button>
+            </form>
+          </li>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="description">You are not following anyone yet.</p>
+    {{/if}}
+  </div>
+
+  <div class="card">
+    <h2>Users Following You</h2>
+    {{#if followedBy.length}}
+      <div class="card">
+        {{#each followedBy}}
+          <div class="card-header">
+            <h3>{{full_name}}</h3>
+            <p>@{{username}}</p>
+          </div>
+        {{/each}}
+      </div>
+    {{else}}
+      <p class="description">No one is following you yet.</p>
+    {{/if}}
+  </div>
+</div>
