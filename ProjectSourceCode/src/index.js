@@ -336,6 +336,71 @@ app.get('/profile/:userId', async (req, res) => {
   }
 });  
 
+app.get('/api/search', async (req, res) => {
+  const { searchstring, limit = 10 } = req.query;
+
+  // Validate input
+  if (!searchstring || searchstring.trim() === '') {
+    return res.status(400).json({ 
+      error: 'Search string is required' 
+    });
+  }
+
+  try {
+    // Search users
+    const usersQuery = `
+      SELECT 
+        user_id, 
+        username, 
+        full_name, 
+        age, 
+        height, 
+        span
+      FROM users
+      WHERE 
+        username ILIKE $1 OR 
+        full_name ILIKE $1
+      LIMIT $2
+    `;
+
+    // Search climbs
+    const climbsQuery = `
+      SELECT 
+        climb_id, 
+        name, 
+        location, 
+        grade, 
+        rating
+      FROM climbs
+      WHERE 
+        name ILIKE $1 OR 
+        location ILIKE $1
+      LIMIT $2
+    `;
+
+    // Use parameterized query with wildcard search
+    const searchParam = `%${searchstring}%`;
+
+    // Execute both queries concurrently
+    const [usersResult, climbsResult] = await Promise.all([
+      db.query(usersQuery, [searchParam, limit]),
+      db.query(climbsQuery, [searchParam, limit])
+    ]);
+
+    // Return results
+    res.json({
+      users: usersResult,
+      climbs: climbsResult
+    });
+
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ 
+      error: 'An error occurred during the search' 
+    });
+  }
+});
+
 
 //
 module.exports = app.listen(3000, () => {

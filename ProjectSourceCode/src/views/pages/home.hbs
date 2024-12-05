@@ -6,130 +6,184 @@
   <title>Acendify - Home</title>
 </head>
 <body>
-<div class="brand-title">ACENDIFY</div>
-<div class="site-container" id="content-container"></div>
-    <div class="row">
-            <div class="col-3 left-side">
-                <div class="search-wrapper">
-                    <form class ="search">
-                        <label for ="search">Search Users</label>
-                        <input type="search" id="search" placeholder="Search..." data-search style="position: fixed; top: 120px; left: 20px;">
-                        {{!-- <button type="submit" style="position: fixed; top: 155px; left: 20px;">Search</button> --}}
-                    </form>
-                    <ul id="searchResults"></ul>
-                        <div class="user-cards3" data-user-cards-container></div>
-                            <template data-user-template>
-                                <div class="card3">
-                                    <div data-header class="card3-header"></div>
-                                    <div data-body class="card3-body"></div>
-                                </div>
-                            </template>
-                </div>
-            </div>
-        <script>
-        // SECTION FOR CLIMBER SEARCH
-    const userCardTemplate = document.querySelector("[data-user-template]");
-    const userCardContainer = document.querySelector("[data-user-cards-container]");
-    const searchInput = document.querySelector("[data-search]");
+  <div class="brand-title">ACENDIFY</div>
+  <!--  Claude Search -->
 
-    let users = [];
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+          <input 
+              type="text" 
+              id="searchInput" 
+              class="form-control" 
+              placeholder="Search users and climbs..."
+          >
+          
+          <div id="searchResults" class="mt-3">
+              <!-- Search results will be dynamically populated here -->
+          </div>
+      </div>
+  </div>
+  <script>
+  // Get references to DOM elements
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
 
-    searchInput.addEventListener("input", e =>{
-        const value = e.target.value.toLowerCase()
-        console.log(value);
-        console.log(users);
-        if (value === "") {
-            users.forEach(user => {
-            user.element.classList.add("hide"); // Hide all cards when the search bar is empty
-            });
-        } else {
-        users.forEach(user =>{
-            const isVisible = 
-                user.name.toLowerCase().includes(value) || 
-                user.email.toLowerCase().includes(value);
-
-                console.log(`User: ${user.name}, Visible: ${isVisible}`); // Debug visibility
-
-            user.element.classList.toggle("hide", !isVisible);
-        });
-        }
-    });
-
-    fetch("https://jsonplaceholder.typicode.com/users") //dummy practice API for checking if this thing works
-    .then(res => res.json())
-    .then(data =>{
-        users = data.map(user => {
-            const card = userCardTemplate.content.cloneNode(true).children[0];
-            const header = card.querySelector("[data-header]");
-            const body = card.querySelector("[data-body]");
-            header.textContent = user.name;
-            body.textContent = user.email;
-            userCardContainer.append(card);
-            console.log(user);
-            return {name: user.name, email: user.email, element: card};
-        });
-    })
-  </script>
-    </div>
-<script>
-  const contentContainer = document.getElementById('content-container');
-  let loading = false;
-  let offset = 0;
-  const limit = 5;
-  async function fetchAscents() {
-    try {
-      const response = await fetch(`/api/ascents?limit=${limit}&offset=${offset}`);
-      console.log('Response:', response);
-      if (!response.ok) throw new Error(`Error fetching ascents: ${response.statusText}`);
-      const data = await response.json();
-      console.log('Fetched data:', data);
-      return data;
-    } catch (error) {
-      console.error('Fetch error:', error.message);
-      return [];
-    }
+  // Debounce function to limit API calls
+  function debounce(func, delay) {
+      let timeoutId;
+      return function() {
+          const context = this;
+          const args = arguments;
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(() => {
+              func.apply(context, args);
+          }, delay);
+      };
   }
 
-  function createCard(ascent, climbs, users) {
-    const climb = climbs.find(c => c.climb_id === ascent.climb_id);
-    console.log(users)
-    const user = users.find(u => u.user_id === ascent.user_id);
-    const card = document.createElement('div');
-    card.className = 'card';
-    card.innerHTML = `
-      <div class="card-header"><a class= "link-header" href="/profile/${user.user_id}">User: ${user ? user.username : 'Unknown'}</a></div>
-      <p>Climb: ${climb ? climb.name : 'Unknown'}</p>
-      <p>Comment: ${ascent.comment || 'No comment'}</p>
-      <p>Suggested Grade: V${ascent.suggested_grade || 'N/A'}</p>
-      <p>Rating: ${ascent.rating || 'N/A'}/5</p>
-    `;
-    return card;
+  // Function to create user result HTML
+  function createUserResultHTML(user) {
+      return `
+          <div class="result-item">
+              <strong>Username:</strong> ${user.username}<br>
+              <strong>Full Name:</strong> ${user.full_name || 'N/A'}<br>
+              <strong>Age:</strong> ${user.age || 'N/A'}<br>
+              <strong>Height:</strong> ${user.height || 'N/A'}<br>
+              <strong>Span:</strong> ${user.span || 'N/A'}
+          </div>
+      `;
   }
 
-  async function loadAscents() {
-    if (loading) return;
-    loading = true;
-    const res = await fetchAscents();
-
-    if (res[0].length === 0) {
-      loading = false;
-      return;
-    }
-    res[0].forEach(ascent => {
-      const card = createCard(ascent, res[1], res[2]);
-      contentContainer.appendChild(card);
-    });
-    offset += limit; 
-    loading = false;
+  // Function to create climb result HTML
+  function createClimbResultHTML(climb) {
+      return `
+          <div class="result-item">
+              <strong>Name:</strong> ${climb.name}<br>
+              <strong>Location:</strong> ${climb.location || 'N/A'}<br>
+              <strong>Grade:</strong> ${climb.grade || 'N/A'}<br>
+              <strong>Rating:</strong> ${climb.rating || 'N/A'}
+          </div>
+      `;
   }
 
-  window.addEventListener('scroll', () => {
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
-      loadAscents();
-    }
+  // Function to render search results
+  function renderSearchResults(data) {
+      let resultsHTML = '';
+
+      // Render users
+      if (data.users && data.users.length > 0) {
+          resultsHTML += '<h5>Users</h5>';
+          resultsHTML += data.users.map(createUserResultHTML).join('');
+      }
+
+      // Add separator if both users and climbs exist
+      if (data.users && data.users.length > 0 && data.climbs && data.climbs.length > 0) {
+          resultsHTML += '<div class="search-result-separator"></div>';
+      }
+
+      // Render climbs
+      if (data.climbs && data.climbs.length > 0) {
+          resultsHTML += '<h5>Climbs</h5>';
+          resultsHTML += data.climbs.map(createClimbResultHTML).join('');
+      }
+
+      // Update search results
+      searchResults.innerHTML = resultsHTML;
+  }
+
+  // Function to perform search
+  const performSearch = debounce(async (searchString) => {
+      // Clear results if search string is empty
+      if (!searchString.trim()) {
+          searchResults.innerHTML = '';
+          return;
+      }
+
+      try {
+          // Perform API call
+          const response = await fetch(`/api/search?searchstring=${encodeURIComponent(searchString)}&limit=5`);
+          
+          if (!response.ok) {
+              throw new Error('Search failed');
+          }
+
+          const data = await response.json();
+
+          // Render results
+          renderSearchResults(data);
+
+      } catch (error) {
+          console.error('Search error:', error);
+          searchResults.innerHTML = '<p class="text-danger">An error occurred during search</p>';
+      }
+  }, 300);  // 300ms debounce delay
+
+  // Add event listener to search input
+  searchInput.addEventListener('input', (e) => {
+      performSearch(e.target.value);
   });
-  
-  loadAscents();
-</script>
+  </script>
+  <div class="site-container" id="content-container"></div>
+  <script>
+    const contentContainer = document.getElementById('content-container');
+    let loading = false;
+    let offset = 0;
+    const limit = 5;
+    async function fetchAscents() {
+      try {
+        const response = await fetch(`/api/ascents?limit=${limit}&offset=${offset}`);
+        console.log('Response:', response);
+        if (!response.ok) throw new Error(`Error fetching ascents: ${response.statusText}`);
+        const data = await response.json();
+        console.log('Fetched data:', data);
+        return data;
+      } catch (error) {
+        console.error('Fetch error:', error.message);
+        return [];
+      }
+    }
+
+    function createCard(ascent, climbs, users) {
+      const climb = climbs.find(c => c.climb_id === ascent.climb_id);
+      console.log(users)
+      const user = users.find(u => u.user_id === ascent.user_id);
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="card-header"><a class= "link-header" href="/profile/${user.user_id}">User: ${user ? user.username : 'Unknown'}</a></div>
+        <p>Climb: ${climb ? climb.name : 'Unknown'}</p>
+        <p>Comment: ${ascent.comment || 'No comment'}</p>
+        <p>Suggested Grade: V${ascent.suggested_grade || 'N/A'}</p>
+        <p>Rating: ${ascent.rating || 'N/A'}/5</p>
+      `;
+      return card;
+    }
+
+    async function loadAscents() {
+      if (loading) return;
+      loading = true;
+      const res = await fetchAscents();
+
+      if (res[0].length === 0) {
+        loading = false;
+        return;
+      }
+      res[0].forEach(ascent => {
+        const card = createCard(ascent, res[1], res[2]);
+        contentContainer.appendChild(card);
+      });
+      offset += limit; 
+      loading = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 && !loading) {
+        loadAscents();
+      }
+    });
+    
+    loadAscents();
+  </script>
 
 </body>
