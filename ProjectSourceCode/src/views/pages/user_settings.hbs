@@ -1,11 +1,119 @@
 <div class="site-container">
   <div class="card">
+    <div style="display: flex; align-items: center;">
+      <!-- Blank Profile Picture -->
+      <img src="/images/image00.jpg" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 20px; margin-bottom: 10px;" />
       <h1>{{user.username}}'s Profile</h1>
-     
-      <div>
-        <strong>Member Since:</strong> 
-        <span class="text-muted">{{created_at}}</span>
-      </div>
     </div>
+
+    <div id="profile-picture-grid">
+      <!-- Profile Picture Options as Buttons -->
+      <button class="profile-option" data-value="/images/image1.jpg">
+        <img src="/images/image1.jpg" alt="Option 1" style="width: 50px; border-radius: 50%; margin-right: 20px; margin-left: 10px;" />
+      </button>
+      <button class="profile-option" data-value="/images/image2.jpg">
+        <img src="/images/image2.jpg" alt="Option 2" style="width: 50px; border-radius: 50%; margin-right: 20px;" />
+      </button>
+      <button class="profile-option" data-value="/images/image3.jpg">
+        <img src="/images/image3.jpg" alt="Option 3" style="width: 50px; border-radius: 50%; margin-right: 20px;" />
+      </button>
+      <button class="profile-option" data-value="/images/image4.jpg">
+        <img src="/images/image4.jpg" alt="Option 4" style="width: 50px; border-radius: 50%; margin-right: 20px;" />
+      </button>
+      <button class="profile-option" data-value="/images/image5.jpg">
+        <img src="/images/image5.jpg" alt="Option 5" style="width: 50px; border-radius: 50%; margin-right: 20px;" />
+      </button>
+      <button class="profile-option" data-value="/images/image6.jpg">
+        <img src="/images/image6.jpg" alt="Option 6" style="width: 50px; border-radius: 50%; margin-right: 10px;" />
+      </button>
+    </div>
+
+    <!-- Editable Fields -->
+    <form id="user-settings-form">
+      <label>
+        <strong>Username:</strong>
+        {{user.username}}
+      </label>
+      <label>
+        <strong>Full Name:</strong>
+        <input id="full-name" type="text" value="{{user.full_name}}" style="width: 100%;" />
+      </label>
+      <label>
+        <strong>Age:</strong>
+        <input id="age" type="number" value="{{user.age}}" style="width: 100%;" />
+      </label>
+      <label>
+        <strong>Height:</strong>
+        <input id="height-feet" type="number" value="{{user_res.height_feet}}" style="width: 50px;" />'
+        <input id="height-inches" type="number" value="{{user_res.height_inches}}" style="width: 50px;" />"
+      </label>
+      <label>
+        <strong>Span:</strong>
+        <input id="span-feet" type="number" value="{{user_res.span_feet}}" style="width: 50px;" />'
+        <input id="span-inches" type="number" value="{{user_res.span_inches}}" style="width: 50px;" />"
+      </label>
+      <label>
+        <strong>Account Created:</strong>
+        {{formatDate user_res.created_at}}
+      </label>
+      <button id="save-changes" class="btn btn-primary">Update Profile</button>
+    </form>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const profileOptions = document.querySelectorAll('.profile-option img');
+    const currentProfilePicture = document.getElementById('current-profile-picture');
+    const saveButton = document.getElementById('save-changes');
+
+    // Highlight the selected profile picture
+    profileOptions.forEach((img) => {
+      img.addEventListener('click', () => {
+        // Remove highlight from all options
+        profileOptions.forEach((img) => img.classList.remove('selected'));
+
+        // Highlight the clicked image
+        img.classList.add('selected');
+
+        // Update the profile picture preview
+        currentProfilePicture.src = img.parentElement.getAttribute('data-value');
+      });
+    });
+
+    // Save changes
+    saveButton.addEventListener('click', (event) => {
+      event.preventDefault();
+
+      // Gather updated data
+      const updatedData = {
+        fullName: document.getElementById('full-name').value,
+        age: document.getElementById('age').value,
+        height: {
+          feet: document.getElementById('height-feet').value,
+          inches: document.getElementById('height-inches').value,
+        },
+        span: {
+          feet: document.getElementById('span-feet').value,
+          inches: document.getElementById('span-inches').value,
+        },
+        profilePicture: currentProfilePicture.src,
+      };
+
+      // Send updated data to the backend
+      fetch('/api/user-settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedData),
+      })
+        .then((response) => {
+          if (response.ok) {
+            alert('Profile updated successfully!');
+          } else {
+            alert('Error updating profile.');
+          }
+        })
+        .catch((error) => console.error('Error:', error));
+    });
+  });
+  </script>
 </div>

@@ -262,6 +262,51 @@ body {
   align-items: center;
 }
 
+.profile-option {
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.profile-option img {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  transition: border-color 0.3s ease;
+}
+
+.profile-option.selected img {
+  border-color: #007bff; /* Highlight color */
+}
+
 .footer-floating {
   position: relative;
+}
+
+.card input {
+  margin: 5px 0;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: calc(100% - 10px); /* Adjusts input width */
+}
+
+.card label {
+  display: block;
+  margin: 10px 0;
+}
+
+.profile-option img {
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.profile-option img:hover {
+  border-color: #007bff;
+}
+
+.profile-option img.selected {
+  border-color: #007bff; /* Highlight for selected picture */
 }
