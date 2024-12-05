@@ -327,7 +327,7 @@ app.get('/profile/:userId', async (req, res) => {
     const user_res = await db.one(userQuery, [userId]);
     const ascents = await db.any(ascentsQuery, [userId]);
     // Pass user and ascents data to the template
-    const render_follow_button = req.session.userId && req.session.userId !== user_res.user_id;
+    const render_follow_button = req.session.user && req.session.userId !== user_res.user_id;
 
     res.render('pages/user_profile', {
       user_res,
@@ -359,16 +359,65 @@ app.get('/followers', auth, async (req, res) => {
       `, [req.session.user.id]),
     ]);
 
+
     res.render('pages/followers', {
-      follows: followsResult.rows,
-      followedBy: followedByResult.rows,
+      user: req.session.user ? req.session.user : null,     
+      follows: followsResult,
+      followedBy: followedByResult,
     });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error fetching follow data');
   }
 });
- 
+
+app.post('/follow', async (req, res) => {
+  const { followed_id } = req.body;
+
+  try {
+    const exists = await db.query(
+      'SELECT 1 FROM follows WHERE follower_id = $1 AND followed_id = $2',
+      [req.session.user.id, followed_id]
+    );
+    console.log(exists);
+    if (exists.length === 0) {
+      console.log("made it in");
+
+      await db.query(
+        'INSERT INTO follows (follower_id, followed_id) VALUES ($1, $2)',
+        [req.session.user.id, followed_id]
+      );
+    }
+
+    res.redirect('back');
+  } catch (error) {
+    console.error('Error following user:', error);
+    res.status(500).send('Error following user.');
+  }
+});
+
+app.post('/unfollow', async (req, res) => {
+  const { followed_id } = req.body;
+
+  try {
+    const follower_id = req.session.user.id; 
+
+    if (!follower_id) {
+      return res.status(403).send("You must be logged in to unfollow a user.");
+    } 
+
+    await db.query(
+      'DELETE FROM follows WHERE follower_id = $1 AND followed_id = $2',
+      [follower_id, followed_id]
+    );
+
+    res.redirect('back');
+  } catch (error) {
+    console.error('Error unfollowing user:', error);
+    res.status(500).send('Error unfollowing user.');
+  }
+});
+
 
 //
 module.exports = app.listen(3000, () => {

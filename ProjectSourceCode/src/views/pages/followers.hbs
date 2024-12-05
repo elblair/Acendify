@@ -6,10 +6,13 @@
     {{#if follows.length}}
       <div class="card">
         {{#each follows}}
-          <div class="card-header">
-            <h3>{{full_name}}</h3>
-            <p>@{{username}}</p>
-          </div>
+          <li class="follower-item">
+            <span>{{this.full_name}} ({{this.username}})</span>
+            <form action="/unfollow" method="POST" class="unfollow-form">
+              <input type="hidden" name="followed_id" value="{{this.user_id}}">
+              <button class="btn btn-small" type="submit">Unfollow</button>
+            </form>
+          </li>
         {{/each}}
       </div>
     {{else}}
