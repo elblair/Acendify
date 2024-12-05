@@ -169,8 +169,37 @@ body {
   margin-bottom: 10000;
 }
 
+.follower-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.follower-item:last-child {
+  border-bottom: none;
+}
+
+.unfollow-form {
+  margin: 0;
+}
+
+.btn-small {
+  padding: var(--spacing-xs) var(--spacing-sm);
+  font-size: 0.8rem;
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-small:hover {
+  background-color: var(--color-primary);
 .navbar-logo {
-  height: 40px; /* Adjust height to fit your navbar */
+  height: 40px; 
   width: auto;
   margin-left: 10px;
 }
