@@ -7,7 +7,6 @@
 </head>
 <body>
   <div class="brand-title">ACENDIFY</div>
-  <!--  Claude Search -->
 
   <div class="container mt-5">
     <div class="row justify-content-center">
@@ -20,16 +19,13 @@
           >
           
           <div id="searchResults" class="mt-3">
-              <!-- Search results will be dynamically populated here -->
           </div>
       </div>
   </div>
   <script>
-  // Get references to DOM elements
   const searchInput = document.getElementById('searchInput');
   const searchResults = document.getElementById('searchResults');
 
-  // Debounce function to limit API calls
   function debounce(func, delay) {
       let timeoutId;
       return function() {
@@ -46,7 +42,6 @@
   const limit = 5;
   }
 
-  // Function to create user result HTML
   function createUserResultHTML(user) {
       return `
           <div class="result-item">
@@ -55,7 +50,6 @@
       `;
   }
 
-  // Function to create climb result HTML
   function createClimbResultHTML(climb) {
       return `
           <div class="result-item">
@@ -64,39 +58,31 @@
       `;
   }
 
-  // Function to render search results
   function renderSearchResults(data) {
       let resultsHTML = '';
 
-      // Render users
       if (data.users && data.users.length > 0) {
           resultsHTML += data.users.map(createUserResultHTML).join('');
       }
 
-      // Add separator if both users and climbs exist
       if (data.users && data.users.length > 0 && data.climbs && data.climbs.length > 0) {
           resultsHTML += '<div class="search-result-separator"></div>';
       }
 
-      // Render climbs
       if (data.climbs && data.climbs.length > 0) {
           resultsHTML += data.climbs.map(createClimbResultHTML).join('');
       }
 
-      // Update search results
       searchResults.innerHTML = resultsHTML;
   }
 
-  // Function to perform search
   const performSearch = debounce(async (searchString) => {
-      // Clear results if search string is empty
       if (!searchString.trim()) {
           searchResults.innerHTML = '';
           return;
       }
 
       try {
-          // Perform API call
           const response = await fetch(`/api/search?searchstring=${encodeURIComponent(searchString)}&limit=5`);
           
           if (!response.ok) {
@@ -105,16 +91,14 @@
 
           const data = await response.json();
 
-          // Render results
           renderSearchResults(data);
 
       } catch (error) {
           console.error('Search error:', error);
           searchResults.innerHTML = '<p class="text-danger">An error occurred during search</p>';
       }
-  }, 300);  // 300ms debounce delay
+  }, 300);
 
-  // Add event listener to search input
   searchInput.addEventListener('input', (e) => {
       performSearch(e.target.value);
   });

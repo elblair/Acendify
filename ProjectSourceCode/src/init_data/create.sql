@@ -53,10 +53,10 @@ CREATE TABLE follows (
 
 -- Insert data into users table
 INSERT INTO users (username, full_name, height, span, age, password) VALUES
-('climber1', 'Alice Johnson', ROW(5, 7)::feet_inches, ROW(5, 8)::feet_inches, 29, 'hashedpassword1'),
-('climber2', 'Bob Smith', ROW(6, 0)::feet_inches, ROW(6, 1)::feet_inches, 34, 'hashedpassword2'),
-('climber3', 'Charlie Brown', ROW(5, 10)::feet_inches, ROW(6, 0)::feet_inches, 22, 'hashedpassword3'),
-('climber4', 'Diana Prince', ROW(5, 5)::feet_inches, ROW(5, 6)::feet_inches, 27, 'hashedpassword4');
+('i<3scaling', 'Alice Johnson', ROW(5, 7)::feet_inches, ROW(5, 8)::feet_inches, 29, 'hashedpassword1'),
+('rocktime', 'Bob Smith', ROW(6, 0)::feet_inches, ROW(6, 1)::feet_inches, 34, 'hashedpassword2'),
+('ninja', 'Charlie Brown', ROW(5, 10)::feet_inches, ROW(6, 0)::feet_inches, 22, 'hashedpassword3'),
+('climber4lyfe', 'Diana Prince', ROW(5, 5)::feet_inches, ROW(5, 6)::feet_inches, 27, 'hashedpassword4');
 
 -- Insert data into climbs table
 INSERT INTO climbs (added_by, name, location, grade, rating) VALUES

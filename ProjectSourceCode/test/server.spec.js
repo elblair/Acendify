@@ -8,13 +8,13 @@ const pgp = require('pg-promise')();
 
 chai.use(chaiHttp);
 
-// Mock user for testing
+
 const testUser = {
   username: 'testuser',
   password: 'testpass123'
 };
 
-// Database configuration
+
 const db = pgp({
   host: process.env.POSTGRES_HOST,
   port: 5432,
@@ -25,7 +25,7 @@ const db = pgp({
 
 
 describe('Authentication Routes', () => {
-  // Clear users table before test
+  
 
   describe('POST /register', () => {
     it('should successfully register a new user', (done) => {

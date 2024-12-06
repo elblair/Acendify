@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const session = require('express-session'); 
 const bcrypt = require('bcryptjs');  
 
-// Configure Handlebars
+
 const hbs = handlebars.create({
     extname: 'hbs',
     layoutsDir: path.join(__dirname, 'views/layout'),
@@ -25,21 +25,21 @@ app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views'));
 
-// Middleware for parsing JSON and URL-encoded form data
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Session middleware
+
 app.use(
   session({
     secret: 'your_secret_key',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false } // Set to true if using HTTPS
+    cookie: { secure: false } 
   })
 );
 
-// Middleware for authentication
+
 const auth = (req, res, next) => {
   if (!req.session.user) {
     return res.redirect('/login');
@@ -47,10 +47,10 @@ const auth = (req, res, next) => {
   next();
 };
  
-// Serve static
+
 app.use(express.static(path.join(__dirname, 'public')));
  
-// Database configuration
+
 const dbConfig = {
   host: process.env.POSTGRES_HOST,
   port: 5432,
@@ -60,7 +60,7 @@ const dbConfig = {
 };
 const db = pgp(dbConfig);
 
-// Route to render homepage
+
 app.get('/', (req, res) => {
   res.redirect('/home');
 });
@@ -72,7 +72,7 @@ app.get('/home', (req, res) => {
    });
 }); 
  
-// Routes for rendering pages
+
 app.get('/login', (req, res) => {
   res.render('pages/login');
 });
@@ -91,7 +91,7 @@ app.get('/add_climb', auth, (req,res) => {
   res.render('pages/add_climb', {user: req.session.user});
 });
 
-// get add_ascent route 
+
 app.get('/add_ascent', auth, async (req, res) => {
   try {
     const query = `
@@ -123,7 +123,7 @@ app.get('/add_ascent', auth, async (req, res) => {
   }
 });
 
-// Register route
+
 app.post('/register', async (req, res) => {
   try {
     const existingUser = await db.oneOrNone('SELECT username FROM users WHERE username = $1', [req.body.username]);
@@ -146,7 +146,7 @@ app.post('/register', async (req, res) => {
   }
 });
 
-// Login route
+
 app.post('/login', (req, res) => {
   const query = 'SELECT * FROM users WHERE username = $1 LIMIT 1';
   console.log(req.body.username)
@@ -167,7 +167,7 @@ app.post('/login', (req, res) => {
     });
 });
 
-//add climb route
+
 app.post('/add_climb', async (req, res) => {
   const { name, location, grade, rating } = req.body;
   
@@ -194,7 +194,7 @@ app.post('/add_climb', async (req, res) => {
   }); 
 });
 
-//add ascent route
+
 app.post('/add_ascent', auth, async (req, res) => {
 try {
   const { climb_id, ascent_date, suggested_grade, rating, comment } = req.body;
@@ -254,12 +254,12 @@ try {
 }
 }); 
 
-//Logout route 
+
 app.get('/logout', (req, res) => { 
   req.session.destroy();
   res.render('pages/home', {message: "Logged out!"});
 });
-// user settings page route
+
 app.get('/user_settings', auth, async (req, res) => {
   const query = 'SELECT * FROM users WHERE username = $1 LIMIT 1';
   try {  
@@ -268,7 +268,7 @@ app.get('/user_settings', auth, async (req, res) => {
       return res.redirect('/login'); 
     }
     
-    // Format the date to be more readable
+    
     user.created_at = new Date(user.created_at).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
@@ -288,7 +288,7 @@ app.get('/user_settings', auth, async (req, res) => {
   }
 }); 
 
-// Endpoint to fetch ascents
+
 app.get('/api/ascents', async (req, res) => {
   const limit = parseInt(req.query.limit, 10) || 5;
   const offset = parseInt(req.query.offset, 10) || 0;
@@ -313,7 +313,7 @@ app.get('/api/ascents', async (req, res) => {
     res.status(500).send('Error fetching ascents');
   }
 });
-// Route to render the user profile page with dynamic data
+
 app.get('/profile/:userId', async (req, res) => {
   const userId = req.params.userId;
 
@@ -336,13 +336,13 @@ app.get('/profile/:userId', async (req, res) => {
 
     const render_follow_button = req.session.user && req.session.user.id != user_res.user_id;
     const [firstNumber, secondNumber] = user_res.height
-      .slice(1, -1) // Remove parentheses
-      .split(",") // Split by comma
+      .slice(1, -1) 
+      .split(",") 
       .map(Number);
 
     const [firstNumber2, secondNumber2] = user_res.span
-      .slice(1, -1) // Remove parentheses
-      .split(",") // Split by comma
+      .slice(1, -1) 
+      .split(",") 
       .map(Number);
 
 
@@ -408,7 +408,7 @@ app.get('/api/search', async (req, res) => {
       error: 'An error occurred during the search' 
     });
   }});
-// Fetch follows information
+
 app.get('/followers', auth, async (req, res) => {
   try {
     const [followsResult, followedByResult] = await Promise.all([
@@ -495,12 +495,12 @@ app.post('/api/user-settings', async (req, res) => {
   } = req.body;
 
   try {
-    // Validate required fields
+    
     if (!full_name) {
       return res.status(400).send('<h1>Error: Full name is required.</h1>');
     }
 
-    // Prepare the query using the custom ROW type
+    
     const query = `
       UPDATE users 
       SET 
@@ -521,7 +521,7 @@ app.post('/api/user-settings', async (req, res) => {
       spanFeet || null,
       spanInches || null,
       profile_picture || null,
-      req.session.user.id, // Assuming user ID is stored in session
+      req.session.user.id, 
     ];
 
     const result = await db.query(query, values);
@@ -530,7 +530,7 @@ app.post('/api/user-settings', async (req, res) => {
       return res.status(404).send('<h1>Error: User not found.</h1>');
     }*/
 
-    // On success, redirect to the profile page or another location
+    
     res.redirect("back");
   } catch (error) {
     console.error('Error updating user profile:', error);
@@ -538,7 +538,7 @@ app.post('/api/user-settings', async (req, res) => {
   }
 });
 
-//
+
 module.exports = app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
