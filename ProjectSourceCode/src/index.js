@@ -335,16 +335,20 @@ app.get('/profile/:userId', async (req, res) => {
     const ascents = await db.any(ascentsQuery, [userId]);
 
     const render_follow_button = req.session.user && req.session.user.id != user_res.user_id;
-    const [firstNumber, secondNumber] = user_res.height
-      .slice(1, -1) 
-      .split(",") 
-      .map(Number);
 
-    const [firstNumber2, secondNumber2] = user_res.span
-      .slice(1, -1) 
-      .split(",") 
-      .map(Number);
+    function tryCatchSplit(value) {
+      try {
+        return value.slice(1, -1) 
+        .split(",") 
+        .map(Number);
+      } catch {
+        return [null, null];
+      }
+    }
 
+    const [firstNumber, secondNumber] = tryCatchSplit(user_res.height);
+
+    const [firstNumber2, secondNumber2] = tryCatchSplit(user_res.span);
 
     res.render('pages/user_profile', {
       user_res,
