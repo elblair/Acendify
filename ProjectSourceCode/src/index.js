@@ -5,7 +5,7 @@ const path = require('path');
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session'); 
-const bcrypt = require('bcryptjs'); 
+const bcrypt = require('bcryptjs');  
 
 // Configure Handlebars
 const hbs = handlebars.create({
@@ -206,7 +206,7 @@ try {
       user: req.session.user ? req.session.user : null,
       currentDate: new Date()
     });
-  }
+  } 
 
   const query = `
     INSERT INTO ascents (
@@ -255,27 +255,34 @@ try {
 }); 
 
 //Logout route 
-app.get('/logout', (req, res) => {
+app.get('/logout', (req, res) => { 
   req.session.destroy();
   res.render('pages/home', {message: "Logged out!"});
 });
 // user settings page route
 app.get('/user_settings', auth, async (req, res) => {
-  const query = 'SELECT user_id, username, created_at FROM users WHERE username = $1 LIMIT 1';
-  try {
+  const query = 'SELECT * FROM users WHERE username = $1 LIMIT 1';
+  try {  
     const user = await db.oneOrNone(query, [req.session.user.username]);
     if (!user) {
-      return res.redirect('/login');
+      return res.redirect('/login'); 
     }
     
     // Format the date to be more readable
     user.created_at = new Date(user.created_at).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric' 
     });
-    
-    res.render('pages/user_settings', {user: req.session.user ? req.session.user : null, created_at: user.created_at});
+    console.log(user);
+    res.render('pages/user_settings', {user: req.session.user ? req.session.user : null, created_at: user.created_at, profile_picture: user.profile_picture, profilePictures: [
+      "/images/image1.jpg",
+      "/images/image2.jpg",
+      "/images/image3.jpg",
+      "/images/image4.jpg",
+      "/images/image5.jpg",
+      "/images/image6.jpg"
+    ] });
   } catch (error) {
     console.error('Database error:', error);
   }
@@ -286,7 +293,7 @@ app.get('/api/ascents', async (req, res) => {
   const limit = parseInt(req.query.limit, 10) || 5;
   const offset = parseInt(req.query.offset, 10) || 0;
 
-  try {  
+  try {   
     const result = await db.manyOrNone(
       `SELECT ascent_id, climb_id, user_id, comment, suggested_grade, rating, ascent_date 
        FROM ascents
@@ -326,14 +333,26 @@ app.get('/profile/:userId', async (req, res) => {
 
     const user_res = await db.one(userQuery, [userId]);
     const ascents = await db.any(ascentsQuery, [userId]);
-    // Pass user and ascents data to the template
-    const render_follow_button = req.session.user && req.session.userId !== user_res.user_id;
+
+    const render_follow_button = req.session.user && req.session.user.id != user_res.user_id;
+    const [firstNumber, secondNumber] = user_res.height
+      .slice(1, -1) // Remove parentheses
+      .split(",") // Split by comma
+      .map(Number);
+
+    const [firstNumber2, secondNumber2] = user_res.span
+      .slice(1, -1) // Remove parentheses
+      .split(",") // Split by comma
+      .map(Number);
+
 
     res.render('pages/user_profile', {
       user_res,
       user: req.session.user ? req.session.user : null,
       ascents,
       render_follow_button,
+      height: {feet: firstNumber, inches: secondNumber},
+      span: {feet: firstNumber2, inches: secondNumber2} 
     });
   } catch (err) {
     console.error('Error fetching user profile:', err);
@@ -353,12 +372,7 @@ app.get('/api/search', async (req, res) => {
   try {
     const usersQuery = `
       SELECT 
-        user_id, 
-        username, 
-        full_name, 
-        age, 
-        height, 
-        span
+        *
       FROM users
       WHERE 
         username ILIKE $1 OR 
@@ -368,11 +382,7 @@ app.get('/api/search', async (req, res) => {
 
     const climbsQuery = `
       SELECT 
-        climb_id, 
-        name, 
-        location, 
-        grade, 
-        rating
+        *
       FROM climbs
       WHERE 
         name ILIKE $1 OR 
@@ -475,6 +485,58 @@ app.post('/unfollow', async (req, res) => {
   }
 });
 
+app.post('/api/user-settings', async (req, res) => {
+  const {
+    full_name,
+    age,
+    profile_picture,
+    height: { feet: heightFeet, inches: heightInches },
+    span: { feet: spanFeet, inches: spanInches },
+  } = req.body;
+
+  try {
+    // Validate required fields
+    if (!full_name) {
+      return res.status(400).send('<h1>Error: Full name is required.</h1>');
+    }
+
+    // Prepare the query using the custom ROW type
+    const query = `
+      UPDATE users 
+      SET 
+        full_name = $1,
+        age = $2,
+        height = ROW($3, $4)::feet_inches,
+        span = ROW($5, $6)::feet_inches,
+        profile_picture = $7
+      WHERE user_id = $8
+      RETURNING *;
+    `;
+
+    const values = [
+      full_name,
+      age || null,
+      heightFeet || null,
+      heightInches || null,
+      spanFeet || null,
+      spanInches || null,
+      profile_picture || null,
+      req.session.user.id, // Assuming user ID is stored in session
+    ];
+
+    const result = await db.query(query, values);
+
+    /*if (result.rows.length === 0) {
+      return res.status(404).send('<h1>Error: User not found.</h1>');
+    }*/
+
+    // On success, redirect to the profile page or another location
+    res.redirect("back");
+  } catch (error) {
+    console.error('Error updating user profile:', error);
+    res.status(500).send('<h1>An error occurred while updating the profile.</h1>');
+  }
+});
 
 //
 module.exports = app.listen(3000, () => {

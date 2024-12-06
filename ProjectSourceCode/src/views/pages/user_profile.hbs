@@ -4,8 +4,8 @@
       <h2>{{user_res.full_name}}</h2>
       <p><strong>Username:</strong> {{user_res.username}}</p>
       <p><strong>Age:</strong> {{user_res.age}}</p>
-      <p><strong>Height:</strong> {{user_res.height_feet}}' {{user_res.height_inches}}"</p>
-      <p><strong>Span:</strong> {{user_res.span_feet}}' {{user_res.span_inches}}"</p>
+      <p><strong>Height:</strong> {{height.feet}}' {{height.inches}}"</p>
+      <p><strong>Span:</strong> {{span.feet}}' {{span.inches}}"</p>
       <p><strong>Account Created:</strong> {{formatDate user_res.created_at}}</p>
       {{#if render_follow_button}}
         <form id="followForm" action="/follow" method="POST">

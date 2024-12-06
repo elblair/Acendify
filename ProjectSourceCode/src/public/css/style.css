@@ -310,3 +310,23 @@ body {
 .profile-option img.selected {
   border-color: #007bff; /* Highlight for selected picture */
 }
+
+profile-label {
+  cursor: pointer;
+  display: inline-block;
+  margin: 5px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  padding: 2px;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.profile-label img {
+  width: 50px;
+  border-radius: 50%;
+}
+
+.profile-option input:checked + .profile-label {
+  border-color: #007bff;
+}
+
