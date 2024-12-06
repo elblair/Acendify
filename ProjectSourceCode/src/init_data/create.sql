@@ -12,7 +12,7 @@ CREATE TABLE users (
     height feet_inches,
     span feet_inches,
     age SMALLINT,
-    profile_picture INT,
+    profile_picture INT DEFAULT 0,
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
