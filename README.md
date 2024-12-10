@@ -5,13 +5,13 @@ A dynamic platform for discovering and tracking climbing routes across America. 
 **Developers:**
 Brittany Lewis,Owen White, Adam Gebben, Eleanor Blaire
 ## Technology Stack:
-Version control: git/github
-Project tracking: github project board
-Database: postgreSQL ​
-Application server: nodeJS
-Testing tools: Mocha+Chai
-Deployment environment: Raspberry Pi
-Templating engine: Handlebars
+- Version control: git/github
+- Project tracking: github project board
+- Database: postgreSQL ​
+- Application server: nodeJS
+- Testing tools: Mocha+Chai
+- Deployment environment: Raspberry Pi
+- Templating engine: Handlebars
 ## Prerequisites:
 - Windows/Mac
 - Safari/Chrome/etc.
