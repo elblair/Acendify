@@ -11,7 +11,7 @@ Brittany Lewis, Owen White, Adam Gebben, Eleanor Blair
 - Deployment environment: Raspberry Pi
 - Templating engine: Handlebars
 ## Prerequisites
-- Windows/Mac
+- Windows/Mac/Linux
 - Safari/Chrome/etc.
 ## Deploying the Development Environment
 Once the code is pulled, navigate to the `ProjectSourceCode` directory. From there run: 
