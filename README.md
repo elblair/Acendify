@@ -3,4 +3,10 @@ A dynamic platform for discovering and tracking climbing routes across America. 
 
 
 ## Deploying the Development Environment
-Once the code is pulled, navigate to the `ProjectSourceCode` directory. From there run `docker compose up` to deploy and perform the testing for the development environment.
+Once the code is pulled, navigate to the `ProjectSourceCode` directory. From there run: 
+
+```sh
+docker compose up
+``` 
+
+to deploy and perform the testing for the development environment.
