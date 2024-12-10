@@ -21,7 +21,7 @@ docker compose up
 ``` 
 
 to deploy and perform the testing for the development environment.
-## How to Run Tests:
+## How to Run Tests
 - help
-**Link to Deployed Application:**
+## Link to Deployed Application
 https://acendify.ddns.net/home
