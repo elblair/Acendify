@@ -12,7 +12,7 @@ Application server: nodeJS
 Testing tools: Mocha+Chai
 Deployment environment: Raspberry Pi
 Templating engine: Handlebars
-**Prerequisites:**
+## Prerequisites:
 - Windows/Mac
 - Safari/Chrome/etc.
 ## Deploying the Development Environment
