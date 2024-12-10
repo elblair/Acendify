@@ -22,28 +22,30 @@ docker compose up
 
 to deploy and perform the testing for the development environment.
 ## How to Run Tests
-- Tests are run automatically when deploying the development environment
+- Tests are run automatically when deploying the development environment  
 
-## Testing Output
-Server is running on port 3000
-web-1  |   Authentication Routes
-web-1  |     POST /register
-web-1  | User registered: testuser
-web-1  |       ✓ should successfully register a new user (122ms)
-web-1  |     GET /register
-web-1  |       ✓ should serve register page
-web-1  |     POST /login
-web-1  | testuser
-web-1  |       ✓ should handle login with correct credentials (73ms)
-web-1  | testuser
-web-1  |       ✓ should handle invalid login credentials (70ms)
-web-1  | 
-web-1  |   Protected Routes
-web-1  |     ✓ should redirect /add_climb to login when not authenticated
-web-1  |     ✓ should redirect /add_ascent to login when not authenticated
-web-1  |     ✓ should redirect /user_settings to login when not authenticated
-web-1  | 
-web-1  | 
-web-1  |   7 passing (295ms)
+Our test cases can be found: [here](https://github.com/elblair/Acendify/blob/main/ProjectSourceCode/test/server.spec.js)
+
+## Testing Output  
+Server is running on port 3000  
+web-1  |   Authentication Routes  
+web-1  |     POST /register  
+web-1  | User registered: testuser  
+web-1  |       ✓ should successfully register a new user (122ms)  
+web-1  |     GET /register  
+web-1  |       ✓ should serve register page  
+web-1  |     POST /login  
+web-1  | testuser  
+web-1  |       ✓ should handle login with correct credentials (73ms)  
+web-1  | testuser  
+web-1  |       ✓ should handle invalid login credentials (70ms)  
+web-1  |   
+web-1  |   Protected Routes  
+web-1  |     ✓ should redirect /add_climb to login when not authenticated  
+web-1  |     ✓ should redirect /add_ascent to login when not authenticated  
+web-1  |     ✓ should redirect /user_settings to login when not authenticated  
+web-1  |   
+web-1  |   
+web-1  |   7 passing (295ms)  
 ## Link to Deployed Application
 https://acendify.ddns.net/home
